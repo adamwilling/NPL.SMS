@@ -15,7 +15,5 @@ namespace R2S.Training.Dao
         bool AddLineItem(LineItem lineItem);
 
         bool UpdateLineItem(LineItem lineItem);
-
-        bool DeleteLineItem(LineItem lineItem);
     }
 }

@@ -9,52 +9,42 @@ namespace R2S.Training.Entities
     class Employee
     {
         private int employeeId;
-        private String employeeName;
+        private string employeeName;
         private double salary;
         private int spvrId;
 
-        public Employee(int EmployeeId, String EmployeeName, double Salary, int SpvrId)
+        public Employee()
         {
-            this.employeeId = EmployeeId;
-            this.employeeName = EmployeeName;
-            this.salary = Salary;
-            this.spvrId = SpvrId;
+
+        }
+        public Employee(int employeeId, string employeeName, double salary, int spvrId)
+        {
+            this.employeeId = employeeId;
+            this.employeeName = employeeName;
+            this.salary = salary;
+            this.spvrId = spvrId;
         }
 
-        public int getEmployeeId()
+        #region Property
+        public int EmployeeId
         {
-            return this.employeeId;
-        }
-        public void setEmployeeId(int EmployeeId)
-        {
-            this.employeeId = EmployeeId;
+            get => employeeId;
         }
 
-        public String getEmployeeName()
+        public string EmployeeName
         {
-            return this.employeeName;
-        }
-        public void setEmployeeName(String EmployeeName)
-        {
-            this.employeeName = EmployeeName;
+            get => employeeName;
         }
 
-        public double getSalary()
+        public double Salary
         {
-            return this.salary;
-        }
-        public void setSalary(double Salary)
-        {
-            this.salary = Salary;
+            get => salary;
         }
 
-        public int getSpvrId()
+        public int SpvrId
         {
-            return this.spvrId;
+            get => spvrId;
         }
-        public void setSpvrId(int SpvrId)
-        {
-            this.spvrId = SpvrId;
-        }
+        #endregion
     }
 }

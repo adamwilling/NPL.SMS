@@ -9,41 +9,29 @@ namespace R2S.Training.Entities
     class Product
     {
         private int productId;
-        private String productName;
+        private string productName;
         private double price;
 
-        public Product(int ProductId, String Productname, double Price)
+        public Product(int productId, string productName, double price)
         {
-            this.productId = ProductId;
-            this.productName = Productname;
-            this.price = Price;
+            this.productId = productId;
+            this.productName = productName;
+            this.price = price;
         }
 
-        public int getProductId()
+        public int ProductId
         {
-            return this.productId;
-        }
-        public void setProductId(int ProductId)
-        {
-            this.productId = ProductId;
+            get => productId;
         }
 
-        public String getProductName()
+        public string ProductName
         {
-            return this.productName;
-        }
-        public void setProductName(String ProductName)
-        {
-            this.productName = ProductName;
+            get => productName;
         }
 
-        public double getPrice()
+        public double Price
         {
-            return this.price;
-        }
-        public void setPrice(double Price)
-        {
-            this.price = Price;
+            get => price;
         }
     }
 }

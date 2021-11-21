@@ -9,7 +9,7 @@ namespace R2S.Training.Dao
 {
     interface IProductDAO
     {
-        List<Product> SearchAllProduct();
+        List<Product> GetAllProduct();
 
         Product SearchProductById(int product_id);
         bool AddProduct(Product product);

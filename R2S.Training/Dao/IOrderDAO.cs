@@ -11,11 +11,11 @@ namespace R2S.Training.Dao
     {
         List<Order> GetAllOrdersByCustomerId(int cutomerId);
 
-        Order GetOrderById(int order_id);
-
         bool AddOrder(Order order);
 
         bool UpdateOrderTotal(int orderId);
+
+        Order SearchOrderById(int orderId);
 
         bool DeleteOrderById(int order_id);
     }

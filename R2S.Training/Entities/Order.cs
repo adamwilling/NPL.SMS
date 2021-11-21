@@ -9,64 +9,45 @@ namespace R2S.Training.Entities
     class Order
     {
         private int orderId;
-        private string orderDate;
+        private DateTime orderDate;
         private int customerId;
         private int employeeId;
         private double total;
 
-        public Order(int OrderId, string OrderDate, int CustomerId, int EmployeeId, double Total)
+        public Order(int orderId, DateTime orderDate, int customerId, int employeeId, double total)
         {
-            this.orderId = OrderId;
-            this.orderDate = OrderDate;
-            this.customerId = CustomerId;
-            this.employeeId = EmployeeId;
-            this.total = Total;
-        }
-
-        public int getOrderId()
-        {
-            return this.orderId;
-        }
-        public void setPrice(int OrderId)
-        {
-            this.orderId = OrderId;
-        }
-
-        public string getOrderDate()
-        {
-            return this.orderDate;
-        }
-        public void setOrderDate(string OrderDate)
-        {
-            this.orderDate = OrderDate;
-        }
-
-        public int getCustomerId()
-        {
-            return this.customerId;
-        }
-        public void setCutomerId(int customerId)
-        {
+            this.orderId = orderId;
+            this.orderDate = orderDate;
             this.customerId = customerId;
-        }
-
-
-        public int getEmployeeId()
-        {
-            return this.employeeId;
-        }
-        public void setEmployeeId(int employeeId)
-        {
             this.employeeId = employeeId;
-        }
-
-        public double getTotal() 
-        { 
-            return this.total; 
-        }
-        public void setTotal(double total)
-        {
             this.total = total;
         }
+
+        #region Property
+        public int OrderId
+        {
+            get => orderId;
+        }
+
+        public DateTime OrderDate
+        {
+            get => orderDate;
+        }
+
+        public int CustomerId
+        {
+            get => customerId;
+        }
+
+        public int EmployeeId
+        {
+            get => employeeId;
+        }
+
+        public double Total
+        {
+            get => total;
+        }
+        #endregion
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using R2S.Training.Entities;
-using R2S.Training.Dao;
+using R2S.Training.Domain;
 namespace R2S.Training
 {
     class SaleManagement
@@ -18,38 +18,37 @@ namespace R2S.Training
             Console.OutputEncoding = Encoding.Unicode;
 
             #region Giao diện chính
-            byte choice;
+            int choice;
             do
             {
-                Console.WriteLine("=================================================Menu Quản Lý=================================================");
-                Console.WriteLine("1. Lấy thông tin tất cả khách hàng có trong hệ thống");
-                Console.WriteLine("2. Lấy thông tin tất cả đơn hàng theo mã khách hàng");
-                Console.WriteLine("3. Lấy thông tin chi tiết đơn hàng theo mã đơn hàng");
-                Console.WriteLine("4. Tính tổng giá của đơn hàng theo mã đơn hàng");
-                Console.WriteLine("5. Thêm khách hàng mới");
-                Console.WriteLine("6. Xóa khách hàng");
-                Console.WriteLine("7. Cập nhật thông tin khách hàng");
-                Console.WriteLine("8. Thêm đơn hàng");
-                Console.WriteLine("9. Thêm chi tiết đơn hàng");
-                Console.WriteLine("10. Cập nhật tổng giá trị đơn hàng");
+                Console.WriteLine("=================================================QUẢN LÝ BÁN HÀNG=================================================");
+                Console.WriteLine("1. Lấy thông tin tất cả khách hàng.");
+                Console.WriteLine("2. Lấy thông tin tất cả đơn hàng theo mã khách hàng.");
+                Console.WriteLine("3. Lấy thông tin chi tiết đơn hàng theo mã đơn hàng.");
+                Console.WriteLine("4. Tính tổng giá của đơn hàng theo mã đơn hàng.");
+                Console.WriteLine("5. Thêm khách hàng.");
+                Console.WriteLine("6. Xóa khách hàng.");
+                Console.WriteLine("7. Cập nhật thông tin khách hàng.");
+                Console.WriteLine("8. Thêm đơn hàng.");
+                Console.WriteLine("9. Thêm chi tiết đơn hàng.");
+                Console.WriteLine("10. Cập nhật tổng giá trị đơn hàng.");
                 Console.Write("- Lựa chọn chức năng: ");
                 do
                 {
-                    choice = byte.Parse(Console.ReadLine());
-                    if (choice < 0 || choice > 10)
+                    choice = int.Parse(Console.ReadLine());
+                    if (choice <= 0 || choice > 10)
                     {
                         Console.Write("*Vui lòng chọn chức năng hợp lệ: ");
                     }
-                } while (choice < 0 || choice > 10);
+                } while (choice <= 0 || choice > 10);
                 switch (choice)
                 {
-                    case 1:
+                    case 1:         // Chức năng 1: Lấy thông tin tất cả khách hàng
                         {
                             GetAllCustomer();
-
                             break;
                         }
-                    case 2:
+                    case 2:         // Chức năng 2: Lấy thông tin tất cả đơn hàng theo mã khách hàng
                         {
                             int customerId;
                             Console.Write("- Nhập mã khách hàng: ");
@@ -59,7 +58,7 @@ namespace R2S.Training
 
                             break;
                         }
-                    case 3:
+                    case 3:         // Chức năng 3: Lấy thông tin chi tiết đơn hàng theo mã đơn hàng
                         {
                             int orderId;
                             Console.Write("- Nhập mã đơn hàng: ");
@@ -69,7 +68,7 @@ namespace R2S.Training
 
                             break;
                         }
-                    case 4:
+                    case 4:         // Chức năng 4: Tính tổng giá của tất cả đơn hàng theo mã đơn hàng
                         {
                             int orderId;
                             Console.Write("- Nhập mã đơn hàng: ");
@@ -79,9 +78,9 @@ namespace R2S.Training
 
                             break;
                         }
-                    case 5:
+                    case 5:         // Chức năng 5: Thêm khách hàng
                         {
-                            String customerName;
+                            string customerName;
                             Console.Write("- Nhập tên khách hàng cần thêm: ");
                             customerName = Console.ReadLine();
 
@@ -90,7 +89,7 @@ namespace R2S.Training
 
                             break;
                         }
-                    case 6:
+                    case 6:         // Chức năng 6: Xóa khách hàng
                         {
                             int customerId;
                             Console.Write("- Nhập mã khách hàng cần xóa: ");
@@ -100,7 +99,7 @@ namespace R2S.Training
 
                             break;
                         }
-                    case 7:
+                    case 7:         // Chức năng 7: Cập nhật thông tin khách hàng
                         {
                             int customerId;
                             Console.Write("- Nhập mã khách hàng cần sửa: ");
@@ -115,26 +114,26 @@ namespace R2S.Training
 
                             break;
                         }
-                    case 8:
+                    case 8:         // Chức năng 8: Thêm đơn hàng
                         {
                             int customerId;
-                            Console.Write("- Nhập mã khách hàng nhận: ");
+                            Console.Write("- Nhập mã khách hàng: ");
                             customerId = int.Parse(Console.ReadLine());
 
                             int employeeId;
-                            Console.Write("- Nhập mã nhân viên bán: ");
+                            Console.Write("- Nhập mã nhân viên: ");
                             employeeId = int.Parse(Console.ReadLine());
 
                             double total;
                             Console.Write("- Nhập tổng giá: ");
                             total = double.Parse(Console.ReadLine());
 
-                            Order order = new Order(1, DateTime.Now.ToString(), customerId, employeeId, total);
+                            Order order = new Order(1, DateTime.Now, customerId, employeeId, total);
                             AddOrder(order);
 
                             break;
                         }
-                    case 9:
+                    case 9:         // Chức năng 9: Thêm chi tiết đơn hàng mới
                         {
                             int orderId;
                             Console.Write("- Nhập mã đơn hàng: ");
@@ -153,14 +152,14 @@ namespace R2S.Training
                             price = double.Parse(Console.ReadLine());
 
                             LineItem lineItem = new LineItem(orderId, productId, quantity, price);
-                            addLineItem(lineItem);
+                            AddLineItem(lineItem);
 
                             break;
                         }
-                    case 10:
+                    case 10:           // Chức năng 10: Cập nhật giá đơn hàng
                         {
                             int orderId;
-                            Console.Write("- Nhập mã đơn hàng cần sửa: ");
+                            Console.Write("- Nhập mã đơn hàng cần cập nhật giá: ");
                             orderId = int.Parse(Console.ReadLine());
 
                             UpdateOrderTotal(orderId);
@@ -179,18 +178,18 @@ namespace R2S.Training
         #region Lấy thông tin tất cả khách hàng
         private static void GetAllCustomer()
         {
+            CustomerDomain customerDomain = new CustomerDomain();
+            List<Customer> listCustomer = customerDomain.GetAllCustomer();
             try
             {
-                CustomerDAO customerDAO = new CustomerDAO();
-                List<Customer> listCustomer = customerDAO.GetAllCustomer();
                 if (listCustomer != null)
                 {
                     Console.WriteLine("*Danh sách khách hàng: " + listCustomer.Count);
                     foreach (Customer customer in listCustomer)
                     {
                         Console.WriteLine("-----------------------------------------------------------------------------------------------");
-                        Console.WriteLine("- Mã khách hàng: " + customer.getCustomerId());
-                        Console.WriteLine("- Tên khách hàng: " + customer.getCustomerName());
+                        Console.WriteLine("- Mã khách hàng: " + customer.CustomerId);
+                        Console.WriteLine("- Tên khách hàng: " + customer.CustomerName);
                     }
                 }
                 else
@@ -200,7 +199,7 @@ namespace R2S.Training
             }
             catch
             {
-                Console.WriteLine("*Có lỗi xảy ra khi lấy thông tin khách hàng từ hệ thống!!!");
+                Console.WriteLine("Lỗi!");
             }
 
         }
@@ -211,18 +210,18 @@ namespace R2S.Training
         {
             try
             {
-                OrderDAO orderDAO = new OrderDAO();
-                List<Order> listOrder = orderDAO.GetAllOrdersByCustomerId(customerId);
+                OrderDomain orderDomain = new OrderDomain();
+                List<Order> listOrder = orderDomain.GetAllOrdersByCustomerId(customerId);
                 if (listOrder != null)
                 {
                     Console.WriteLine("*Thông tin đơn đặt hàng có mã khách hàng: " + customerId + ": " + listOrder.Count + " (đơn)");
                     foreach (Order order in listOrder)
                     {
                         Console.WriteLine("-----------------------------------------------------------------------------------------------");
-                        Console.WriteLine("- Mã đơn hàng: " + order.getOrderId());
-                        Console.WriteLine("- Ngày đặt hàng: " + order.getOrderDate());
-                        Console.WriteLine("- Nhân viên thực hiện: " + order.getEmployeeId());
-                        Console.WriteLine("- Tổng: " + order.getTotal() + " VND");
+                        Console.WriteLine("- Mã đơn hàng: " + order.OrderId);
+                        Console.WriteLine("- Ngày đặt hàng: " + order.OrderDate);
+                        Console.WriteLine("- Nhân viên thực hiện: " + order.EmployeeId);
+                        Console.WriteLine("- Tổng: " + order.Total + " VND");
                     }
                 }
                 else
@@ -242,17 +241,17 @@ namespace R2S.Training
         {
             try
             {
-                LineItemDAO lineItemDAO = new LineItemDAO();
-                List<LineItem> listLineItem = lineItemDAO.GetAllItemsByOrderId(orderId);
+                LineItemDomain lineItemDomain = new LineItemDomain();
+                List<LineItem> listLineItem = lineItemDomain.GetAllItemsByOrderId(orderId);
                 if (listLineItem != null)
                 {
                     Console.WriteLine("*Thông tin chi tiết đơn hàng có mã đơn hàng " + orderId + ": " + listLineItem.Count + " (đơn)");
                     foreach (LineItem lineItem in listLineItem)
                     {
                         Console.WriteLine("-----------------------------------------------------------------------------------------------");
-                        Console.WriteLine("- Mã sản phẩm: " + lineItem.getProductId());
-                        Console.WriteLine("- Số lượng: " + lineItem.getQuantity());
-                        Console.WriteLine("- Giá: " + lineItem.getPrice());
+                        Console.WriteLine("- Mã sản phẩm: " + lineItem.ProductId);
+                        Console.WriteLine("- Số lượng: " + lineItem.Quantity);
+                        Console.WriteLine("- Giá: " + lineItem.Price);
                     }
                 }
                 else
@@ -272,8 +271,8 @@ namespace R2S.Training
         {
             try
             {
-                LineItemDAO lineItemDAO = new LineItemDAO();
-                double total = lineItemDAO.ComputeOrderTotal(orderId);
+                LineItemDomain lineItemDomain = new LineItemDomain();
+                double total = lineItemDomain.ComputeOrderTotal(orderId);
                 Console.WriteLine("*Tổng giá tất cả đơn hàng có mã đơn hàng " + orderId + ": " + total + " VND");
             }
             catch
@@ -288,8 +287,8 @@ namespace R2S.Training
         {
             try
             {
-                CustomerDAO customerDAO = new CustomerDAO();
-                if (customerDAO.AddCustomer(customer))
+                CustomerDomain customerDomain = new CustomerDomain();
+                if (customerDomain.AddCustomer(customer))
                 {
                     Console.WriteLine("*Thêm thành công!");
                 }
@@ -300,7 +299,7 @@ namespace R2S.Training
             }
             catch
             {
-                Console.WriteLine("*Lỗi khi thêm khách hàng!!!");
+                Console.WriteLine("*Có lỗi xảy ra khi thêm khách hàng!!!");
             }
         }
         #endregion
@@ -310,8 +309,8 @@ namespace R2S.Training
         {
             try
             {
-                CustomerDAO customerDAO = new CustomerDAO();
-                if (customerDAO.DeleteCustomer(customerId))
+                CustomerDomain customerDomain = new CustomerDomain();
+                if (customerDomain.DeleteCustomer(customerId))
                 {
                     Console.WriteLine("*Xóa thành công!");
                 }
@@ -322,7 +321,7 @@ namespace R2S.Training
             }
             catch
             {
-                Console.WriteLine("*Lỗi khi xóa khách hàng!!!");
+                Console.WriteLine("*Có lỗi xảy ra khi xóa khách hàng!!!");
             }
         }
         #endregion
@@ -332,8 +331,8 @@ namespace R2S.Training
         {
             try
             {
-                CustomerDAO customerDAO = new CustomerDAO();
-                if (customerDAO.UpdateCustomer(customer))
+                CustomerDomain customerDomain = new CustomerDomain();
+                if (customerDomain.UpdateCustomer(customer))
                 {
                     Console.WriteLine("*Cập nhật thông tin khách hàng thành công!");
                 }
@@ -344,7 +343,7 @@ namespace R2S.Training
             }
             catch
             {
-                Console.WriteLine("*Lỗi khi cập nhật thông tin khách hàng!");
+                Console.WriteLine("*Có lỗi xảy ra khi cập nhật thông tin khách hàng!");
             }
         }
         #endregion
@@ -354,8 +353,8 @@ namespace R2S.Training
         {
             try
             {
-                OrderDAO orderDAO = new OrderDAO();
-                if (orderDAO.AddOrder(order))
+                OrderDomain orderDomain = new OrderDomain();
+                if (orderDomain.AddOrder(order))
                 {
                     Console.WriteLine("*Thêm đơn hàng thành công!");
                 }
@@ -366,18 +365,18 @@ namespace R2S.Training
             }
             catch
             {
-                Console.WriteLine("*Lỗi khi thêm đơn hàng, vui lòng kiểm tra lại mã người dùng!!!");
+                Console.WriteLine("*Có lỗi xảy ra khi thêm đơn hàng!!!");
             }
         }
         #endregion
 
         #region Thêm chi tiết đơn hàng
-        private static void addLineItem(LineItem lineItem)
+        private static void AddLineItem(LineItem lineItem)
         {
             try
             {
-                LineItemDAO lineItemDAO = new LineItemDAO();
-                if (lineItemDAO.AddLineItem(lineItem))
+                LineItemDomain lineItemDomain = new LineItemDomain();
+                if (lineItemDomain.AddLineItem(lineItem))
                 {
                     Console.WriteLine("*Thêm chi tiết đơn hàng thành công!");
                 }
@@ -388,7 +387,7 @@ namespace R2S.Training
             }
             catch
             {
-                Console.WriteLine("*Lỗi khi thêm chi tiết đơn hàng!!!");
+                Console.WriteLine("*Có lỗi xảy ra khi thêm chi tiết đơn hàng!!!");
             }
         }
         #endregion
@@ -398,8 +397,8 @@ namespace R2S.Training
         {
             try
             {
-                OrderDAO orderDAO = new OrderDAO();
-                if (orderDAO.UpdateOrderTotal(orderId))
+                OrderDomain orderDomain = new OrderDomain();
+                if (orderDomain.UpdateOrderTotal(orderId))
                 {
                     Console.WriteLine("*Cập nhật tổng giá trị đơn hàng thành công!");
                 }
@@ -410,7 +409,7 @@ namespace R2S.Training
             }
             catch
             {
-                Console.WriteLine("*Lỗi khi cập nhật tổng giá trị đơn hàng!!!");
+                Console.WriteLine("*Có lỗi xảy ra khi cập nhật tổng giá trị đơn hàng!!!");
             }
         }
         #endregion

@@ -11,7 +11,7 @@ namespace R2S.Training.Dao
     {
          List<Customer> GetAllCustomer();
 
-        Customer GetCustomerById(int customer_id);
+        Customer SearchCustomerById(int customer_id);
         bool AddCustomer(Customer customer);
         bool DeleteCustomer(int customerId);
         bool UpdateCustomer(Customer customer);

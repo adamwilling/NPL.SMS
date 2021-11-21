@@ -13,48 +13,35 @@ namespace R2S.Training.Entities
         private int quantity;
         private double price;
 
-        public LineItem(int OrderId, int ProductId, int Quantity, double Price)
+        public LineItem(int orderId, int productId, int quantity, double price)
         {
-            this.orderId = OrderId;
-            this.productId = ProductId;
-            this.quantity = Quantity;
-            this.price = Price;
-        }
-
-        public int getOrderId()
-        {
-            return this.orderId;
-        }
-        public void setOrderId(int OrderId)
-        {
-            this.orderId = OrderId;
-        }
-
-        public int getProductId()
-        {
-            return this.productId;
-        }
-        public void setProductId(int ProductId)
-        {
-            this.productId = ProductId; 
-        }
-
-        public int getQuantity()
-        {
-            return this.quantity;
-        }
-        public void setQuantity(int quantity)
-        {
+            this.orderId = orderId;
+            this.productId = productId;
             this.quantity = quantity;
+            this.price = price;
         }
 
-        public double getPrice()
+        #region Property
+        public int OrderId
         {
-            return this.price;
+            get => orderId;
         }
-        public void setPrice(double Price)
+
+        public int ProductId
         {
-            this.price = Price;
+            get => productId;
         }
+
+        public int Quantity
+        {
+            get => quantity;
+        }
+
+        public double Price
+        {
+            get => price;
+            set => price = value;
+        }
+        #endregion
     }
 }

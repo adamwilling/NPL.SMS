@@ -12,7 +12,7 @@ namespace R2S.Training.Dao
     {
         List<Employee> GetAllEmployee();
 
-        Employee GetEmployeeById(int employee_id);
+        Employee SearchEmployeeById(int employee_id);
 
         bool AddEmployee(Employee employee);
 

@@ -9,30 +9,24 @@ namespace R2S.Training.Entities
     class Customer
     {
         private int customerId;
-        private String customerName;
+        private string customerName;
 
-        public Customer(int CustomerId, String CustomerName)
+        public Customer(int customerId, string customerName)
         {
-            this.customerId = CustomerId;
-            this.customerName = CustomerName;
-        }
-
-        public int getCustomerId()
-        {
-            return customerId;
-        }
-        public void setCustomerId(int CustomerId)
-        {
-            this.customerId = CustomerId;
+            this.customerId = customerId;
+            this.customerName = customerName;
         }
 
-        public String getCustomerName()
+        public int CustomerId
         {
-            return this.customerName;
+            get => customerId;
+            set => customerId = value;
         }
-        public void setCustomerName(String CustomerName)
+
+        public string CustomerName
         {
-            this.customerName = CustomerName;
+            get => customerName;
+            set => customerName = value;
         }
     }
 }

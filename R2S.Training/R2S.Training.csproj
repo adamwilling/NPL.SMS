@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="ConnectionManager\ConnectionManagers.cs" />
     <Compile Include="Dao\CustomerDAO.cs" />
-    <Compile Include="Dao\EmpoloyeeDAO.cs" />
+    <Compile Include="Dao\EmployeeDAO.cs" />
     <Compile Include="Dao\ICustomerDAO.cs" />
     <Compile Include="Dao\IEmployeeDAO.cs" />
     <Compile Include="Dao\ILineItemDAO.cs" />
@@ -54,6 +54,9 @@
     <Compile Include="Dao\LineItemDAO.cs" />
     <Compile Include="Dao\OrderDAO.cs" />
     <Compile Include="Dao\ProductDAO.cs" />
+    <Compile Include="Domain\CustomerDomain.cs" />
+    <Compile Include="Domain\LineItemDomain.cs" />
+    <Compile Include="Domain\OrderDomain.cs" />
     <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\Employee.cs" />
     <Compile Include="Entities\LineItem.cs" />
@@ -62,9 +65,6 @@
     <Compile Include="Main\SaleManagement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyManager\PropertyManagers.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
