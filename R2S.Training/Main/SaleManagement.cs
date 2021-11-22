@@ -124,11 +124,7 @@ namespace R2S.Training
                             Console.Write("- Nhập mã nhân viên: ");
                             employeeId = int.Parse(Console.ReadLine());
 
-                            double total;
-                            Console.Write("- Nhập tổng giá: ");
-                            total = double.Parse(Console.ReadLine());
-
-                            Order order = new Order(1, DateTime.Now, customerId, employeeId, total);
+                            Order order = new Order(1, DateTime.Now, customerId, employeeId, 0);
                             AddOrder(order);
 
                             break;
@@ -147,11 +143,7 @@ namespace R2S.Training
                             Console.Write("- Nhập số lượng: ");
                             quantity = int.Parse(Console.ReadLine());
 
-                            double price;
-                            Console.Write("- Nhập giá tiền (VND): ");
-                            price = double.Parse(Console.ReadLine());
-
-                            LineItem lineItem = new LineItem(orderId, productId, quantity, price);
+                            LineItem lineItem = new LineItem(orderId, productId, quantity, 0);
                             AddLineItem(lineItem);
 
                             break;
@@ -178,10 +170,10 @@ namespace R2S.Training
         #region Lấy thông tin tất cả khách hàng
         private static void GetAllCustomer()
         {
-            CustomerDomain customerDomain = new CustomerDomain();
-            List<Customer> listCustomer = customerDomain.GetAllCustomer();
             try
             {
+                CustomerDomain customerDomain = new CustomerDomain();
+                List<Customer> listCustomer = customerDomain.GetAllCustomer();
                 if (listCustomer != null)
                 {
                     Console.WriteLine("*Danh sách khách hàng: " + listCustomer.Count);
@@ -211,16 +203,21 @@ namespace R2S.Training
             try
             {
                 OrderDomain orderDomain = new OrderDomain();
+                CustomerDomain customerDomain = new CustomerDomain();
+                EmployeeDomain employeeDomain = new EmployeeDomain();
                 List<Order> listOrder = orderDomain.GetAllOrdersByCustomerId(customerId);
                 if (listOrder != null)
                 {
                     Console.WriteLine("*Thông tin đơn đặt hàng có mã khách hàng: " + customerId + ": " + listOrder.Count + " (đơn)");
-                    foreach (Order order in listOrder)
+                    foreach (Order order in listOrder)      // Hiện thị từng đơn hàng
                     {
+                        Customer customer = customerDomain.SearchCustomerById(order.CustomerId);
+                        Employee employee = employeeDomain.SearchEmployeeById(order.EmployeeId);
                         Console.WriteLine("-----------------------------------------------------------------------------------------------");
                         Console.WriteLine("- Mã đơn hàng: " + order.OrderId);
-                        Console.WriteLine("- Ngày đặt hàng: " + order.OrderDate);
-                        Console.WriteLine("- Nhân viên thực hiện: " + order.EmployeeId);
+                        Console.WriteLine("- Thời gian đặt hàng: " + order.OrderDate.ToString());
+                        Console.WriteLine("- Khách hàng: " + customer.CustomerName);
+                        Console.WriteLine("- Nhân viên: " + employee.EmployeeName);
                         Console.WriteLine("- Tổng: " + order.Total + " VND");
                     }
                 }
@@ -249,7 +246,7 @@ namespace R2S.Training
                     foreach (LineItem lineItem in listLineItem)
                     {
                         Console.WriteLine("-----------------------------------------------------------------------------------------------");
-                        Console.WriteLine("- Mã sản phẩm: " + lineItem.ProductId);
+                        Console.WriteLine("- Sản phẩm: " + lineItem.ProductId);
                         Console.WriteLine("- Số lượng: " + lineItem.Quantity);
                         Console.WriteLine("- Giá: " + lineItem.Price);
                     }
@@ -271,8 +268,8 @@ namespace R2S.Training
         {
             try
             {
-                LineItemDomain lineItemDomain = new LineItemDomain();
-                double total = lineItemDomain.ComputeOrderTotal(orderId);
+                OrderDomain orderDomain = new OrderDomain();
+                double total = orderDomain.ComputeOrderTotal(orderId);
                 Console.WriteLine("*Tổng giá tất cả đơn hàng có mã đơn hàng " + orderId + ": " + total + " VND");
             }
             catch

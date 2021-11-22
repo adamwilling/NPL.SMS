@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("R2S.Training")]
-[assembly: AssemblyCopyright("Copyright ©  2021")]
+[assembly: AssemblyCopyright("Copyright © 2021 By Nguyễn Võ Song Toàn")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

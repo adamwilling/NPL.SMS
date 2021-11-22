@@ -45,15 +45,20 @@ namespace R2S.Training.Domain
             return orderDao.AddOrder(order);
         }
 
+        public double ComputeOrderTotal(int orderId)
+        {
+            return orderDao.ComputeOrderTotal(orderId);
+        }
+
         internal bool UpdateOrderTotal(int orderId)
         {
             if (orderDao.SearchOrderById(orderId) == null)      // Kiểm tra mã đơn hàng có tồn tại hay không 
             {
+                Console.WriteLine("*Mã đơn hàng không tồn tại!");
                 return false;
             }
 
             return orderDao.UpdateOrderTotal(orderId);
         }
-
     }
 }

@@ -30,11 +30,6 @@ namespace R2S.Training.Domain
             return lineItemDAO.GetAllItemsByOrderId(orderId);
         }
 
-        public double ComputeOrderTotal(int orderId)
-        {
-                return lineItemDAO.ComputeOrderTotal(orderId);
-        }
-
         public bool AddLineItem(LineItem lineItem)
         {
             Order order = orderDAO.SearchOrderById(lineItem.OrderId);

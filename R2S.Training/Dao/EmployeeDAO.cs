@@ -26,14 +26,19 @@ namespace R2S.Training.Dao
             return db.GetAllEmployee();
         }
 
-        public Employee SearchEmployeeById(int employee_id)
+        public Employee SearchEmployeeById(int employeeId)
         {
-            return db.SearchEmployeeById(employee_id);
+            return db.SearchEmployeeById(employeeId);
+        }
+
+        public bool DeleteEmployee(int employeeId)
+        {
+            return db.DeleteEmployee(employeeId);
         }
 
         public bool UpdateEmployee(Employee employee)
         {
-            return db.UpdateEmployeeById(employee);
+            return db.UpdateEmployee(employee);
         }
     }
 }

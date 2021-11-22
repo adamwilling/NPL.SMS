@@ -10,7 +10,6 @@ namespace R2S.Training.Dao
     interface ILineItemDAO
     {
         List<LineItem> GetAllItemsByOrderId(int orderId);
-        double ComputeOrderTotal(int orderId);
 
         bool AddLineItem(LineItem lineItem);
 

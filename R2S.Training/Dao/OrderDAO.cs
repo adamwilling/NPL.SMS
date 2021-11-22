@@ -36,6 +36,11 @@ namespace R2S.Training.Dao
             return db.SearchOrderById(orderId);
         }
 
+        public double ComputeOrderTotal(int orderId)
+        {
+            return db.ComputeOrderTotal(orderId);
+        }
+
         public bool UpdateOrderTotal(int orderId)
         {
             return db.UpdateOrderTotal(orderId);

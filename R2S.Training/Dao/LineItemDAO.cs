@@ -22,11 +22,6 @@ namespace R2S.Training.Dao
                 return db.AddLineItem(lineItem);
         }
 
-        public double ComputeOrderTotal(int orderId)
-        {
-                return db.ComputeOrderTotal(orderId);
-        }
-
         public List<LineItem> GetAllItemsByOrderId(int orderId)
         {
             return db.GetAllItemsByOrderId(orderId);

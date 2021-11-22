@@ -34,7 +34,7 @@ namespace R2S.Training.ConnectionManager
                 // Khởi tạo danh sách nhân viên
                 List<Customer> listCustomer = new List<Customer>();
                 comm = new SqlCommand("select * from Customer", conn);
-                comm.CommandType = CommandType.Text;
+                
                 SqlDataReader dataReader = comm.ExecuteReader();
                 while (dataReader.Read())
                 {
@@ -68,7 +68,7 @@ namespace R2S.Training.ConnectionManager
                 // Lấy dữ liệu từ server
                 comm = new SqlCommand("select * from Orders where customer_id=@customer_id", conn);        // Lấy những đơn hàng có mã khách hàng được truyền vào
                 comm.Parameters.Add(new SqlParameter("@customer_id", customerId));
-                comm.CommandType = CommandType.Text;
+                
                 SqlDataReader dataReader = comm.ExecuteReader();
 
                 // Lấy dữ liệu từng đơn hàng trong bản và thêm vào danh sách
@@ -104,7 +104,7 @@ namespace R2S.Training.ConnectionManager
 
                 // Lấy dữ liệu từ server
                 comm = new SqlCommand("select * from LineItem where order_id=" + orderId, conn);
-                comm.CommandType = CommandType.Text;
+                
                 SqlDataReader dataReader = comm.ExecuteReader();
                 
                 // Lấy dữ liệu từng chi tiết đơn hàng trong bảng và thêm vào danh sách
@@ -132,20 +132,42 @@ namespace R2S.Training.ConnectionManager
         // Chức năng 4: Tính tổng giá của tất cả đơn hàng theo mã đơn hàng
         public double ComputeOrderTotal(int orderId)
         {
-            conn.Open();
-            comm = new SqlCommand("select * from dbo.search_ComputeOrderTotal(@order_id)", conn);
-            comm.Parameters.Add(new SqlParameter("@order_id", orderId));
-            comm.CommandType = CommandType.StoredProcedure;
-            double total = (double)comm.ExecuteScalar();
-            conn.Close();
-            return total;
+            try
+            {
+                conn.Open();
+                comm = new SqlCommand("ComputeOrderTotal(@order_id)", conn);
+                comm.Parameters.Add(new SqlParameter("@order_id", orderId));
+                // Tạo một đối tượng Parameter, lưu trữ giá trị trả về của hàm.
+                SqlParameter resultParam = new SqlParameter("@Result", SqlDbType.Float);
+
+                //  
+                resultParam.Direction = ParameterDirection.ReturnValue;
+
+                comm.Parameters.Add(resultParam);
+
+                // Gọi hàm.
+                comm.ExecuteNonQuery();
+
+                double total = (double)resultParam.Value;
+                conn.Close();
+                return total;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("*Lỗi: " + ex);
+                return 0;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
         // Chức năng 5: Thêm khách hàng
         public bool AddCustmer(Customer customer)
         {
             conn.Open();
-            comm = new SqlCommand("add_Customer", conn);
+            comm = new SqlCommand("AddCustomer", conn);
             comm.Parameters.Add(new SqlParameter("@customer_name", customer.CustomerName));
             comm.CommandType = CommandType.StoredProcedure;
             comm.ExecuteNonQuery();
@@ -158,7 +180,7 @@ namespace R2S.Training.ConnectionManager
         public bool DeleteCustmer(int customerId)
         {
             conn.Open();
-            comm = new SqlCommand("delete_Customer", conn);
+            comm = new SqlCommand("DeleteCustomer", conn);
             comm.Parameters.Add(new SqlParameter("@customer_id", customerId));
             comm.CommandType = CommandType.StoredProcedure;
             comm.ExecuteNonQuery();
@@ -170,7 +192,7 @@ namespace R2S.Training.ConnectionManager
         public bool UpdateCustmer(Customer customer)
         {
             conn.Open();
-            comm = new SqlCommand("update_Customer", conn);
+            comm = new SqlCommand("UpdateCustomer", conn);
             comm.Parameters.Add(new SqlParameter("@customer_id", customer.CustomerId));
             comm.Parameters.Add(new SqlParameter("@customer_name", customer.CustomerName));
             comm.CommandType = CommandType.StoredProcedure;
@@ -190,7 +212,7 @@ namespace R2S.Training.ConnectionManager
                 comm.Parameters.Add(new SqlParameter("@customer_id", order.CustomerId));
                 comm.Parameters.Add(new SqlParameter("@employee_id", order.EmployeeId));
                 comm.Parameters.Add(new SqlParameter("@total", order.Total));
-                comm.CommandType = CommandType.Text;
+                
                 comm.ExecuteNonQuery();
                 return true;
             }
@@ -214,7 +236,6 @@ namespace R2S.Training.ConnectionManager
             comm.Parameters.Add(new SqlParameter("@product_id", lineItem.ProductId));
             comm.Parameters.Add(new SqlParameter("@quantity", lineItem.Quantity));
             comm.Parameters.Add(new SqlParameter("@price", lineItem.Price));
-            comm.CommandType = CommandType.StoredProcedure;
             comm.ExecuteNonQuery();
             conn.Close();
             return true;
@@ -226,8 +247,8 @@ namespace R2S.Training.ConnectionManager
             try
             {
                 conn.Open();
-                comm = new SqlCommand("update Orders set total = (select SUM(quantity*price) from LineItem where order_id=" + orderId + ")", conn);
-                comm.CommandType = CommandType.Text;
+                comm = new SqlCommand("update Orders set total = (select SUM(price) from LineItem where order_id=@order_idd)", conn);
+                comm.Parameters.Add(new SqlParameter("@order_id", orderId));
                 comm.ExecuteNonQuery();
                 return true;
             }
@@ -242,21 +263,27 @@ namespace R2S.Training.ConnectionManager
             }
         }
 
-        // Tìm kiếm đơn hàng theo mã đơn hàng
-        public Order SearchOrderById(int orderId)
+        // Lấy thông tin tất cả đơn hàng
+        public List<Order> GetAllOrder()
         {
             try
             {
-                conn.Open();
-                Order order = null;
-                comm = new SqlCommand("select * from Order where order_id=" + orderId, conn);
-                comm.CommandType = CommandType.Text;
+                conn.Open();        // Mở kết nối
+                List<Order> listOrder = new List<Order>();      // Khởi tạo danh sách đơn hàng
+
+                // Lấy dữ liệu từ server
+                comm = new SqlCommand("select * from Orders", conn);        // Lấy những đơn hàng có mã khách hàng được truyền vào
+                
                 SqlDataReader dataReader = comm.ExecuteReader();
+
+                // Lấy dữ liệu từng đơn hàng trong bản và thêm vào danh sách
                 while (dataReader.Read())
                 {
-                    order = new Order(dataReader.GetInt32(0), dataReader.GetDateTime(1), dataReader.GetInt32(2), dataReader.GetInt32(3), dataReader.GetDouble(4));
+                    Order order = new Order(dataReader.GetInt32(0), dataReader.GetDateTime(1), dataReader.GetInt32(2), dataReader.GetInt32(3), dataReader.GetDouble(4));
+                    listOrder.Add(order);
                 }
-                return order;
+
+                return listOrder;       // Trả về danh sách đơn hàng có mã id là 
             }
             catch (Exception ex)
             {
@@ -269,36 +296,37 @@ namespace R2S.Training.ConnectionManager
             }
         }
 
+        // Tìm kiếm đơn hàng theo mã đơn hàng
+        public Order SearchOrderById(int orderId)
+        {
+            foreach(Order order in GetAllOrder())
+            {
+                if (order.OrderId == orderId)
+                {
+                    return order;
+                }
+            }
+            return null;
+        }
+
         // Tìm kiếm khách hàng theo mã khách hàng
         public Customer SearchCustomerById(int customerId)
         {
-            try
+            foreach(Customer customer in GetAllCustomer())
             {
-                conn.Open();
-                Customer customer = null;
-                comm = new SqlCommand("select * from Customer where customer_id=@customer_id", conn);
-                comm.Parameters.Add(new SqlParameter("@customer_id", customerId));
-                comm.CommandType = CommandType.Text;
-                SqlDataReader dataReader = comm.ExecuteReader();
-                customer = new Customer(dataReader.GetInt32(0), dataReader.GetString(1));
-                return customer;
+                if (customer.CustomerId == customerId)
+                {
+                    return customer;
+                }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("*Lỗi: " + ex);
-                return null;
-            }
-            finally
-            {
-                conn.Close();
-            }
+            return null;
         }
 
         // Xóa đơn đặt hàng theo mã khách hàng
         public bool DeleteOrderById(int orderId)
         {
             conn.Open();
-            comm = new SqlCommand("delete_OrderById", conn);
+            comm = new SqlCommand("delete_Order", conn);
             comm.Parameters.Add(new SqlParameter("@order_id", orderId));
             comm.CommandType = CommandType.StoredProcedure;
             comm.ExecuteNonQuery();
@@ -310,7 +338,7 @@ namespace R2S.Training.ConnectionManager
         public bool UpdateLineItemById(LineItem lineItem)
         {
             conn.Open();
-            comm = new SqlCommand("update_LineItemById", conn);
+            comm = new SqlCommand("update LineItem set quantity=@quantity, price=@price where order_id=@order_id and product_id=@product_id", conn);
             comm.Parameters.Add(new SqlParameter("@order_id", lineItem.OrderId));
             comm.Parameters.Add(new SqlParameter("@product_id", lineItem.ProductId));
             comm.Parameters.Add(new SqlParameter("@quantity", lineItem.Quantity));
@@ -334,6 +362,7 @@ namespace R2S.Training.ConnectionManager
             return true;
         }
 
+        #region Quản lý nhân viên
         public List<Employee> GetAllEmployee()
         {
             try
@@ -341,7 +370,7 @@ namespace R2S.Training.ConnectionManager
                 conn.Open();
                 List<Employee> listEmployee = new List<Employee>();
                 comm = new SqlCommand("select * from Employee", conn);
-                comm.CommandType = CommandType.Text;
+                
                 SqlDataReader dataReader = comm.ExecuteReader();
                 while (dataReader.Read())
                 {
@@ -366,25 +395,14 @@ namespace R2S.Training.ConnectionManager
         //Tìm kiếm nhân viên theo id
         public Employee SearchEmployeeById(int employeeId)
         {
-            try
+            foreach(Employee employee in GetAllEmployee())
             {
-                conn.Open();
-                Employee employee = null;
-                comm = new SqlCommand("select * from Employee where employee_id=" + employeeId, conn);
-                comm.CommandType = CommandType.Text;
-                SqlDataReader dataReader = comm.ExecuteReader();
-                employee = new Employee(dataReader.GetInt32(0), dataReader.GetString(1), dataReader.GetDouble(2), dataReader.GetInt32(3));
-                return employee;
+                if (employee.EmployeeId == employeeId)
+                {
+                    return employee;
+                }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("*Lỗi: " + ex);
-                return null;
-            }
-            finally
-            {
-                conn.Close();
-            }
+            return null;
         }
 
         //Thêm mới employee 
@@ -402,8 +420,20 @@ namespace R2S.Training.ConnectionManager
             return true;
         }
 
-        //Cập nhật employee theo id
-        public bool UpdateEmployeeById(Employee employee)
+        // Xóa đơn đặt hàng theo mã khách hàng
+        public bool DeleteEmployee(int employeeId)
+        {
+            conn.Open();
+            comm = new SqlCommand("delete_Employee", conn);
+            comm.Parameters.Add(new SqlParameter("@order_id", employeeId));
+            comm.CommandType = CommandType.StoredProcedure;
+            comm.ExecuteNonQuery();
+            conn.Close();
+            return true;
+        }
+
+        // Cập nhật thông tin nhân viên
+        public bool UpdateEmployee(Employee employee)
         {
             conn.Open();
             comm = new SqlCommand("update_Employee", conn);
@@ -416,35 +446,10 @@ namespace R2S.Training.ConnectionManager
             conn.Close();
             return true;
         }
+        #endregion
 
-        //Thêm mới sản phẩm
-        public bool InsertProduct(Product product)
-        {
-            conn.Open();
-            comm = new SqlCommand("insert_Product", conn);
-            comm.Parameters.Add(new SqlParameter("@product_name", product.ProductName));
-            comm.Parameters.Add(new SqlParameter("@product_price", product.Price));
-            comm.CommandType = CommandType.StoredProcedure;
-            comm.ExecuteNonQuery();
-            conn.Close();
-            return true;
-        }
-
-        //Cập nhật sản phẩm
-        public bool UpdateProduct(Product product)
-        {
-            conn.Open();
-            comm = new SqlCommand("update_Product", conn);
-            comm.Parameters.Add(new SqlParameter("@product_id", product.ProductId));
-            comm.Parameters.Add(new SqlParameter("@product_name", product.ProductName));
-            comm.Parameters.Add(new SqlParameter("@product_price", product.Price));
-            comm.CommandType = CommandType.StoredProcedure;
-            comm.ExecuteNonQuery();
-            conn.Close();
-            return true;
-        }
-
-        //Lấy tất cả sản phẩm có trong hệ thống
+        #region Quản lý sản phẩm
+        // Lấy danh sách tất cả sản phẩm
         public List<Product> GetAllProduct()
         {
             try
@@ -452,7 +457,7 @@ namespace R2S.Training.ConnectionManager
                 conn.Open();
                 List<Product> listProduct = new List<Product>();
                 comm = new SqlCommand("select * from Product", conn);
-                comm.CommandType = CommandType.Text;
+
                 SqlDataReader dataReader = comm.ExecuteReader();
                 while (dataReader.Read())
                 {
@@ -475,6 +480,33 @@ namespace R2S.Training.ConnectionManager
             }
         }
 
+        // Thêm mới sản phẩm
+        public bool InsertProduct(Product product)
+        {
+            conn.Open();
+            comm = new SqlCommand("insert into Product(product_name,product_price) values (@product_name,@product_price)", conn);
+            comm.Parameters.Add(new SqlParameter("@product_name", product.ProductName));
+            comm.Parameters.Add(new SqlParameter("@product_price", product.Price));
+            comm.CommandType = CommandType.StoredProcedure;
+            comm.ExecuteNonQuery();
+            conn.Close();
+            return true;
+        }
+
+        // Cập nhật sản phẩm
+        public bool UpdateProduct(Product product)
+        {
+            conn.Open();
+            comm = new SqlCommand("update Product set product_name=@product_name, product_price=@product_price where product_id=@product_id", conn);
+            comm.Parameters.Add(new SqlParameter("@product_id", product.ProductId));
+            comm.Parameters.Add(new SqlParameter("@product_name", product.ProductName));
+            comm.Parameters.Add(new SqlParameter("@product_price", product.Price));
+            
+            comm.ExecuteNonQuery();
+            conn.Close();
+            return true;
+        }
+
         //Tìm kiếm sản phẩm theo mã sản phẩm
         public Product SearchProductById(int productId)
         {
@@ -482,8 +514,8 @@ namespace R2S.Training.ConnectionManager
             {
                 conn.Open();
                 Product product = null;
-                comm = new SqlCommand("select * from Employee where employee_id=" + productId, conn);
-                comm.CommandType = CommandType.Text;
+                comm = new SqlCommand("select * from Product where product_id=" + productId, conn);
+                
                 SqlDataReader dataReader = comm.ExecuteReader();
                 product = new Product(dataReader.GetInt32(0), dataReader.GetString(1), dataReader.GetDouble(2));
                 return product;
@@ -498,5 +530,6 @@ namespace R2S.Training.ConnectionManager
                 conn.Close();
             }
         }
+        #endregion
     }
 }

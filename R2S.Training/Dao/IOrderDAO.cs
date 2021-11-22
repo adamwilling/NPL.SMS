@@ -13,10 +13,12 @@ namespace R2S.Training.Dao
 
         bool AddOrder(Order order);
 
-        bool UpdateOrderTotal(int orderId);
-
         Order SearchOrderById(int orderId);
 
         bool DeleteOrderById(int order_id);
+
+        double ComputeOrderTotal(int orderId);
+
+        bool UpdateOrderTotal(int orderId);
     }
 }

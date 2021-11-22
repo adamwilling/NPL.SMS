@@ -55,6 +55,7 @@
     <Compile Include="Dao\OrderDAO.cs" />
     <Compile Include="Dao\ProductDAO.cs" />
     <Compile Include="Domain\CustomerDomain.cs" />
+    <Compile Include="Domain\EmployeeDomain.cs" />
     <Compile Include="Domain\LineItemDomain.cs" />
     <Compile Include="Domain\OrderDomain.cs" />
     <Compile Include="Entities\Customer.cs" />

@@ -20,6 +20,11 @@ namespace R2S.Training.Domain
             return customerDao.GetAllCustomer();
         }
 
+        internal Customer SearchCustomerById(int customerId)
+        {
+            return customerDao.SearchCustomerById(customerId);
+        }
+
         internal bool AddCustomer(Customer customer)
         {
             return customerDao.AddCustomer(customer);
