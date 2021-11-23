@@ -24,7 +24,7 @@ namespace R2S.Training.Domain
         {
             if (customerDAO.SearchCustomerById(customerId) == null)
             {
-                Console.WriteLine("*Mã khách hàng không tồn tại!!!");
+                Console.WriteLine("***Mã khách hàng không tồn tại!!!");
                 return null;
             }
             return orderDao.GetAllOrdersByCustomerId(customerId);
@@ -34,10 +34,10 @@ namespace R2S.Training.Domain
         {
             if(customerDAO.SearchCustomerById(order.CustomerId) == null)       // Kiểm tra mã khách hàng có tồn tại hay không
             {
-                Console.WriteLine("*Mã khách hàng không tồn tại!!!");
+                Console.WriteLine("***Mã khách hàng không tồn tại!!!");
                 if (employeeDAO.SearchEmployeeById(order.EmployeeId) == null)      // Kiểm tra mã nhân viên có tồn tại hay không
                 {
-                    Console.WriteLine("*Mã nhân viên không tồn tại!!!");
+                    Console.WriteLine("***Mã nhân viên không tồn tại!!!");
                     return false;
                 }
                 return false;
@@ -54,7 +54,7 @@ namespace R2S.Training.Domain
         {
             if (orderDao.SearchOrderById(orderId) == null)      // Kiểm tra mã đơn hàng có tồn tại hay không 
             {
-                Console.WriteLine("*Mã đơn hàng không tồn tại!");
+                Console.WriteLine("***Mã đơn hàng không tồn tại!!!");
                 return false;
             }
 

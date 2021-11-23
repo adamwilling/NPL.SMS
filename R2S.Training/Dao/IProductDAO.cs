@@ -13,7 +13,7 @@ namespace R2S.Training.Dao
 
         Product SearchProductById(int product_id);
         bool AddProduct(Product product);
-
+        bool DeleteProduct(int productId);
         bool UpdateProduct(Product product);
     }
 }

@@ -135,20 +135,9 @@ namespace R2S.Training.ConnectionManager
             try
             {
                 conn.Open();
-                comm = new SqlCommand("ComputeOrderTotal(@order_id)", conn);
+                comm = new SqlCommand("select dbo.ComputeOrderTotal(@order_id)", conn);
                 comm.Parameters.Add(new SqlParameter("@order_id", orderId));
-                // Tạo một đối tượng Parameter, lưu trữ giá trị trả về của hàm.
-                SqlParameter resultParam = new SqlParameter("@Result", SqlDbType.Float);
-
-                //  
-                resultParam.Direction = ParameterDirection.ReturnValue;
-
-                comm.Parameters.Add(resultParam);
-
-                // Gọi hàm.
-                comm.ExecuteNonQuery();
-
-                double total = (double)resultParam.Value;
+                double total = (double)(comm.ExecuteScalar());
                 conn.Close();
                 return total;
             }
@@ -247,7 +236,7 @@ namespace R2S.Training.ConnectionManager
             try
             {
                 conn.Open();
-                comm = new SqlCommand("update Orders set total = (select SUM(price) from LineItem where order_id=@order_idd)", conn);
+                comm = new SqlCommand("update Orders set total = (select SUM(price) from LineItem) where order_id=@order_id", conn);
                 comm.Parameters.Add(new SqlParameter("@order_id", orderId));
                 comm.ExecuteNonQuery();
                 return true;
@@ -348,19 +337,32 @@ namespace R2S.Training.ConnectionManager
             conn.Close();
             return true;
         }
+        #region Quản lý chi tiết đơn hàng
 
-        //Xóa LineItem theo id
+        // Xóa LineItem theo id
         public bool DeleleLineItemById(LineItem lineItem)
         {
-            conn.Open();
-            comm = new SqlCommand("delete_LineItemById", conn);
-            comm.Parameters.Add(new SqlParameter("@order_id", lineItem.OrderId));
-            comm.Parameters.Add(new SqlParameter("@product_id", lineItem.ProductId));
-            comm.CommandType = CommandType.StoredProcedure;
-            comm.ExecuteNonQuery();
-            conn.Close();
-            return true;
+            try
+            {
+                conn.Open();
+                comm = new SqlCommand("delete from LineItem where order_id=@order_id and product_id=@product_id", conn);
+                comm.Parameters.Add(new SqlParameter("@order_id", lineItem.OrderId));
+                comm.Parameters.Add(new SqlParameter("@product_id", lineItem.ProductId));
+                comm.CommandType = CommandType.StoredProcedure;
+                comm.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("* Lỗi: " + ex);
+                return false;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
+        #endregion
 
         #region Quản lý nhân viên
         public List<Employee> GetAllEmployee()
@@ -424,7 +426,7 @@ namespace R2S.Training.ConnectionManager
         public bool DeleteEmployee(int employeeId)
         {
             conn.Open();
-            comm = new SqlCommand("delete_Employee", conn);
+            comm = new SqlCommand("DeleteEmployee", conn);
             comm.Parameters.Add(new SqlParameter("@order_id", employeeId));
             comm.CommandType = CommandType.StoredProcedure;
             comm.ExecuteNonQuery();
@@ -436,7 +438,7 @@ namespace R2S.Training.ConnectionManager
         public bool UpdateEmployee(Employee employee)
         {
             conn.Open();
-            comm = new SqlCommand("update_Employee", conn);
+            comm = new SqlCommand("update Employee set employee_name=@employee_name,salary=@salary,@supervisor_id=supervisor_id where employee_id=@employee_id", conn);
             comm.Parameters.Add(new SqlParameter("@employee_id", employee.EmployeeId));
             comm.Parameters.Add(new SqlParameter("@employee_name", employee.EmployeeName));
             comm.Parameters.Add(new SqlParameter("@salary", employee.Salary));
@@ -493,6 +495,18 @@ namespace R2S.Training.ConnectionManager
             return true;
         }
 
+        // Xóa sản phẩm
+        public bool DeleteProduct(int productId)
+        {
+            conn.Open();
+            comm = new SqlCommand("delete_Employee", conn);
+            comm.Parameters.Add(new SqlParameter("@order_id", productId));
+            comm.CommandType = CommandType.StoredProcedure;
+            comm.ExecuteNonQuery();
+            conn.Close();
+            return true;
+        }
+
         // Cập nhật sản phẩm
         public bool UpdateProduct(Product product)
         {
@@ -507,28 +521,17 @@ namespace R2S.Training.ConnectionManager
             return true;
         }
 
-        //Tìm kiếm sản phẩm theo mã sản phẩm
+        // Tìm kiếm sản phẩm theo mã sản phẩm
         public Product SearchProductById(int productId)
         {
-            try
+            foreach (Product product in GetAllProduct())
             {
-                conn.Open();
-                Product product = null;
-                comm = new SqlCommand("select * from Product where product_id=" + productId, conn);
-                
-                SqlDataReader dataReader = comm.ExecuteReader();
-                product = new Product(dataReader.GetInt32(0), dataReader.GetString(1), dataReader.GetDouble(2));
-                return product;
+                if (product.ProductId == productId)
+                {
+                    return product;
+                }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("*Lỗi: " + ex);
-                return null;
-            }
-            finally
-            {
-                conn.Close();
-            }
+            return null;
         }
         #endregion
     }

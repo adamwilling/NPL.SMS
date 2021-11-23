@@ -30,6 +30,10 @@ namespace R2S.Training.Dao
         {
             return db.SearchProductById(productId);
         }
+        public bool DeleteProduct(int productId)
+        {
+            return db.DeleteProduct(productId);
+        }
 
         public bool UpdateProduct(Product product)
         {

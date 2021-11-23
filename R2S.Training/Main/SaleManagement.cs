@@ -238,6 +238,7 @@ namespace R2S.Training
         {
             try
             {
+                ProductDomain productDomain = new ProductDomain();
                 LineItemDomain lineItemDomain = new LineItemDomain();
                 List<LineItem> listLineItem = lineItemDomain.GetAllItemsByOrderId(orderId);
                 if (listLineItem != null)
@@ -245,8 +246,9 @@ namespace R2S.Training
                     Console.WriteLine("*Thông tin chi tiết đơn hàng có mã đơn hàng " + orderId + ": " + listLineItem.Count + " (đơn)");
                     foreach (LineItem lineItem in listLineItem)
                     {
+                        Product product = productDomain.SearchProductById(lineItem.ProductId);
                         Console.WriteLine("-----------------------------------------------------------------------------------------------");
-                        Console.WriteLine("- Sản phẩm: " + lineItem.ProductId);
+                        Console.WriteLine("- Sản phẩm: " + product.ProductName);
                         Console.WriteLine("- Số lượng: " + lineItem.Quantity);
                         Console.WriteLine("- Giá: " + lineItem.Price);
                     }
@@ -266,16 +268,9 @@ namespace R2S.Training
         #region Tính tổng trá trị đơn hàng
         private static void ComputeOrderTotal(int orderId)
         {
-            try
-            {
-                OrderDomain orderDomain = new OrderDomain();
-                double total = orderDomain.ComputeOrderTotal(orderId);
-                Console.WriteLine("*Tổng giá tất cả đơn hàng có mã đơn hàng " + orderId + ": " + total + " VND");
-            }
-            catch
-            {
-                Console.WriteLine("*Có lỗi xảy ra khi tính tổng giá trị đơn hàng có mã đơn hàng " + orderId + "!!!");
-            }
+            OrderDomain orderDomain = new OrderDomain();
+            double total = orderDomain.ComputeOrderTotal(orderId);
+            Console.WriteLine("*Tổng giá tất cả đơn hàng có mã đơn hàng " + orderId + ": " + total + " VND");
         }
         #endregion
 
@@ -392,21 +387,14 @@ namespace R2S.Training
         #region Cập nhật tổng giá trị đơn hàng
         private static void UpdateOrderTotal(int orderId)
         {
-            try
+            OrderDomain orderDomain = new OrderDomain();
+            if (orderDomain.UpdateOrderTotal(orderId))
             {
-                OrderDomain orderDomain = new OrderDomain();
-                if (orderDomain.UpdateOrderTotal(orderId))
-                {
-                    Console.WriteLine("*Cập nhật tổng giá trị đơn hàng thành công!");
-                }
-                else
-                {
-                    Console.WriteLine("*Cập nhật tổng giá trị đơn hàng thất bại!");
-                }
+                Console.WriteLine("*Cập nhật tổng giá trị đơn hàng thành công!");
             }
-            catch
+            else
             {
-                Console.WriteLine("*Có lỗi xảy ra khi cập nhật tổng giá trị đơn hàng!!!");
+                Console.WriteLine("***Cập nhật tổng giá trị đơn hàng thất bại!!!");
             }
         }
         #endregion

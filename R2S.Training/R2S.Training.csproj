@@ -58,6 +58,7 @@
     <Compile Include="Domain\EmployeeDomain.cs" />
     <Compile Include="Domain\LineItemDomain.cs" />
     <Compile Include="Domain\OrderDomain.cs" />
+    <Compile Include="Domain\ProductDomain.cs" />
     <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\Employee.cs" />
     <Compile Include="Entities\LineItem.cs" />

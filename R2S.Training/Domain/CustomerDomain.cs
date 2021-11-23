@@ -32,6 +32,11 @@ namespace R2S.Training.Domain
 
         internal bool DeleteCustomer(int customerId)
         {
+            if (customerDao.SearchCustomerById(customerId) == null)
+            {
+                Console.WriteLine("***Mã khách hàng không tồn tại!!!");
+                return false;
+            }
             return customerDao.DeleteCustomer(customerId);
         }
 
@@ -39,6 +44,7 @@ namespace R2S.Training.Domain
         {
             if (customerDao.SearchCustomerById(customer.CustomerId) == null)
             {
+                Console.WriteLine("***Mã khách hàng không tồn tại!!!");
                 return false;
             }
             return customerDao.UpdateCustomer(customer);

@@ -20,28 +20,33 @@ namespace R2S.Training.Domain
             return employeeDao.GetAllEmployee();
         }
 
-        internal Employee SearchEmployeeById(int EmployeeId)
+        internal Employee SearchEmployeeById(int employeeId)
         {
-            return employeeDao.SearchEmployeeById(EmployeeId);
+            return employeeDao.SearchEmployeeById(employeeId);
         }
 
-        internal bool AddEmployee(Employee Employee)
+        internal bool AddEmployee(Employee employee)
         {
-            return employeeDao.AddEmployee(Employee);
+            return employeeDao.AddEmployee(employee);
         }
 
-        internal bool DeleteEmployee(int EmployeeId)
+        internal bool DeleteEmployee(int employeeId)
         {
-            return employeeDao.DeleteEmployee(EmployeeId);
+            if (employeeDao.SearchEmployeeById(employeeId) == null)
+            {
+                Console.WriteLine("***Mã nhân viên không tồn tại!!!");
+                return false;
+            }
+            return employeeDao.DeleteEmployee(employeeId);
         }
 
-        internal bool UpdateEmployee(Employee Employee)
+        internal bool UpdateEmployee(Employee employee)
         {
-            if (employeeDao.SearchEmployeeById(Employee.EmployeeId) == null)
+            if (employeeDao.SearchEmployeeById(employee.EmployeeId) == null)
             {
                 return false;
             }
-            return employeeDao.UpdateEmployee(Employee);
+            return employeeDao.UpdateEmployee(employee);
         }
     }
 }
