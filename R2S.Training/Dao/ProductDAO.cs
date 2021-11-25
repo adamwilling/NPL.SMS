@@ -18,7 +18,7 @@ namespace R2S.Training.Dao
         }
         public bool AddProduct(Product product)
         {
-            return db.InsertProduct(product);
+            return db.AddProduct(product);
         }
 
         public List<Product> GetAllProduct()

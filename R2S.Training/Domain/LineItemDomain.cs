@@ -34,28 +34,26 @@ namespace R2S.Training.Domain
         {
             Order order = orderDAO.SearchOrderById(lineItem.OrderId);
             Product product = productDAO.SearchProductById(lineItem.ProductId);
-            if (order == null)      // Kiểm tra xem mã đơn đặt hàng có trong hệ thống hay không
+            if (order == null)
             {
                 Console.WriteLine("*Mã đơn hàng không tồn tại!!!");
-                if (product == null)       //Kiểm tra xem mã sản phẩm có tồn tại trong hệ thống hay không
+                if (product == null)
                 {
                     Console.WriteLine("*Mã sản phẩm không tồn tại!!!");
                     return false;
                 }
                 return false;
             }
-            if (product == null)      // Kiểm tra xem mã đơn đặt hàng có trong hệ thống hay không
+            if (product == null)
             {
                 Console.WriteLine("*Mã sản phẩm không tồn tại!!!");
-                if (order == null)       //Kiểm tra xem mã sản phẩm có tồn tại trong hệ thống hay không
+                if (order == null)
                 {
                     Console.WriteLine("*Mã đơn hàng không tồn tại!!!");
                     return false;
                 }
                 return false;
             }
-
-            lineItem.Price = product.Price * lineItem.Quantity;
 
             return lineItemDAO.AddLineItem(lineItem);
         }

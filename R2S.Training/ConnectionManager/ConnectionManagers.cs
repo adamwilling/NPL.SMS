@@ -28,27 +28,24 @@ namespace R2S.Training.ConnectionManager
         {
             try
             {
-                // Mở kết nối
                 conn.Open();
 
-                // Khởi tạo danh sách nhân viên
                 List<Customer> listCustomer = new List<Customer>();
+
                 comm = new SqlCommand("select * from Customer", conn);
-                
+
                 SqlDataReader dataReader = comm.ExecuteReader();
                 while (dataReader.Read())
                 {
-                    // Lấy dữ liệu từng hàng
                     Customer customer = new Customer(dataReader.GetInt32(0), dataReader.GetString(1));
-
-                    // Thêm vào danh sách
                     listCustomer.Add(customer);
                 }
+
                 return listCustomer;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("*Lỗi: " + ex);
+                Console.WriteLine("* An error occurred while interacting with SQL Server: " + ex);
                 return null;
             }
             finally
@@ -62,27 +59,26 @@ namespace R2S.Training.ConnectionManager
         {
             try
             {
-                conn.Open();        // Mở kết nối
-                List<Order> listOrder = new List<Order>();      // Khởi tạo danh sách đơn hàng
+                conn.Open();
 
-                // Lấy dữ liệu từ server
-                comm = new SqlCommand("select * from Orders where customer_id=@customer_id", conn);        // Lấy những đơn hàng có mã khách hàng được truyền vào
+                List<Order> listOrder = new List<Order>();
+
+                comm = new SqlCommand("select * from Orders where customer_id=@customer_id", conn);
+
                 comm.Parameters.Add(new SqlParameter("@customer_id", customerId));
                 
                 SqlDataReader dataReader = comm.ExecuteReader();
-
-                // Lấy dữ liệu từng đơn hàng trong bản và thêm vào danh sách
                 while (dataReader.Read())       
                 {
                     Order order = new Order(dataReader.GetInt32(0), dataReader.GetDateTime(1), dataReader.GetInt32(2), dataReader.GetInt32(3), dataReader.GetDouble(4));
                     listOrder.Add(order);
                 }
 
-                return listOrder;       // Trả về danh sách đơn hàng có mã id là 
+                return listOrder;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("*Lỗi: " + ex);
+                Console.WriteLine("* An error occurred while interacting with SQL Server: " + ex);
                 return null;
             }
             finally
@@ -96,31 +92,23 @@ namespace R2S.Training.ConnectionManager
         {
             try
             {
-                // Mở kết nối
                 conn.Open();
-
-                // Khởi tạo danh sách chi tiết đơn hàng
                 List<LineItem> listLineItem = new List<LineItem>();
 
-                // Lấy dữ liệu từ server
                 comm = new SqlCommand("select * from LineItem where order_id=" + orderId, conn);
                 
                 SqlDataReader dataReader = comm.ExecuteReader();
-                
-                // Lấy dữ liệu từng chi tiết đơn hàng trong bảng và thêm vào danh sách
                 while (dataReader.Read())
                 {
-                    // Lấy dữ liệu từng hàng
                     LineItem order = new LineItem(dataReader.GetInt32(0), dataReader.GetInt32(1), dataReader.GetInt32(2), dataReader.GetDouble(3));
-
-                    // Thêm vào danh sách
                     listLineItem.Add(order);
                 }
+
                 return listLineItem;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("*Lỗi: " + ex);
+                Console.WriteLine("* An error occurred while interacting with SQL Server: " + ex);
                 return null;
             }
             finally
@@ -129,21 +117,22 @@ namespace R2S.Training.ConnectionManager
             }
         }
 
-        // Chức năng 4: Tính tổng giá của tất cả đơn hàng theo mã đơn hàng
+        // Chức năng 4: Tính tổng giá của đơn hàng theo mã đơn hàng
         public double ComputeOrderTotal(int orderId)
         {
             try
             {
                 conn.Open();
+
                 comm = new SqlCommand("select dbo.ComputeOrderTotal(@order_id)", conn);
                 comm.Parameters.Add(new SqlParameter("@order_id", orderId));
+
                 double total = (double)(comm.ExecuteScalar());
-                conn.Close();
                 return total;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("*Lỗi: " + ex);
+                Console.WriteLine("* An error occurred while retrieving data from SQL Server: " + ex);
                 return 0;
             }
             finally
@@ -155,39 +144,81 @@ namespace R2S.Training.ConnectionManager
         // Chức năng 5: Thêm khách hàng
         public bool AddCustmer(Customer customer)
         {
-            conn.Open();
-            comm = new SqlCommand("AddCustomer", conn);
-            comm.Parameters.Add(new SqlParameter("@customer_name", customer.CustomerName));
-            comm.CommandType = CommandType.StoredProcedure;
-            comm.ExecuteNonQuery();
-            conn.Close();
-            return true;
+            try
+            {
+                conn.Open();
+
+                comm = new SqlCommand("AddCustomer", conn);
+                comm.Parameters.Add(new SqlParameter("@customer_name", customer.CustomerName));
+                comm.CommandType = CommandType.StoredProcedure;
+
+                comm.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("* An error occurred while interacting with SQL Server: " + ex);
+                return false;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
 
         // Chức năng 6: Xóa khách hàng
         public bool DeleteCustmer(int customerId)
         {
-            conn.Open();
-            comm = new SqlCommand("DeleteCustomer", conn);
-            comm.Parameters.Add(new SqlParameter("@customer_id", customerId));
-            comm.CommandType = CommandType.StoredProcedure;
-            comm.ExecuteNonQuery();
-            conn.Close();
-            return true;
+            try
+            {
+                conn.Open();
+
+                comm = new SqlCommand("DeleteCustomer", conn);
+                comm.Parameters.Add(new SqlParameter("@customer_id", customerId));
+                comm.CommandType = CommandType.StoredProcedure;
+
+                comm.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("* An error occurred while interacting with SQL Server: " + ex);
+                return false;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
         // Chức năng 7: Cập nhật thông tin khách hàng
         public bool UpdateCustmer(Customer customer)
         {
-            conn.Open();
-            comm = new SqlCommand("UpdateCustomer", conn);
-            comm.Parameters.Add(new SqlParameter("@customer_id", customer.CustomerId));
-            comm.Parameters.Add(new SqlParameter("@customer_name", customer.CustomerName));
-            comm.CommandType = CommandType.StoredProcedure;
-            comm.ExecuteNonQuery();
-            conn.Close();
-            return true;
+            try
+            {
+                conn.Open();
+
+                comm = new SqlCommand("UpdateCustomer", conn);
+                comm.Parameters.Add(new SqlParameter("@customer_id", customer.CustomerId));
+                comm.Parameters.Add(new SqlParameter("@customer_name", customer.CustomerName));
+                comm.CommandType = CommandType.StoredProcedure;
+
+                comm.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("* An error occurred while interacting with SQL Server: " + ex);
+                return false;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
         // Chức năng 8: Thêm đơn hàng
@@ -196,6 +227,7 @@ namespace R2S.Training.ConnectionManager
             try
             {
                 conn.Open();
+
                 comm = new SqlCommand("insert into Orders(order_date,customer_id,employee_id,total) values(@order_date,@customer_id,@employee_id,@total)", conn);
                 comm.Parameters.Add(new SqlParameter("@order_date", order.OrderDate));
                 comm.Parameters.Add(new SqlParameter("@customer_id", order.CustomerId));
@@ -203,11 +235,12 @@ namespace R2S.Training.ConnectionManager
                 comm.Parameters.Add(new SqlParameter("@total", order.Total));
                 
                 comm.ExecuteNonQuery();
+
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("*Lỗi: " + ex);
+                Console.WriteLine("* An error occurred while interacting with SQL Server: " + ex);
                 return false;
             }
             finally
@@ -219,32 +252,46 @@ namespace R2S.Training.ConnectionManager
         // Chức năng 9: Thêm chi tiết đơn hàng mới
         public bool AddLineItem(LineItem lineItem)
         {
-            conn.Open();
-            comm = new SqlCommand("insert into LineItem(order_id,product_id,quantity,price) values(@order_id,@product_id,@quantity,@price)", conn);
-            comm.Parameters.Add(new SqlParameter("@order_id", lineItem.OrderId));
-            comm.Parameters.Add(new SqlParameter("@product_id", lineItem.ProductId));
-            comm.Parameters.Add(new SqlParameter("@quantity", lineItem.Quantity));
-            comm.Parameters.Add(new SqlParameter("@price", lineItem.Price));
-            comm.ExecuteNonQuery();
-            conn.Close();
-            return true;
+            try
+            {
+                conn.Open();
+
+                comm = new SqlCommand("insert into LineItem(order_id,product_id,quantity,price) values(@order_id,@product_id,@quantity,@price)", conn);
+                comm.Parameters.Add(new SqlParameter("@order_id", lineItem.OrderId));
+                comm.Parameters.Add(new SqlParameter("@product_id", lineItem.ProductId));
+                comm.Parameters.Add(new SqlParameter("@quantity", lineItem.Quantity));
+                comm.Parameters.Add(new SqlParameter("@price", lineItem.Price));
+
+                comm.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("* An error occurred while interacting with SQL Server: " + ex);
+                return true;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
-        // Chức năng 10: Cập nhật giá đơn hàng
+        // Chức năng 10: Cập nhật tổng giá giá đơn hàng
         public bool UpdateOrderTotal(int orderId)
         {
             try
             {
                 conn.Open();
-                comm = new SqlCommand("update Orders set total = (select SUM(price) from LineItem) where order_id=@order_id", conn);
+                comm = new SqlCommand("update Orders set total = (select SUM(price*quantity) from LineItem) where order_id=@order_id", conn);
                 comm.Parameters.Add(new SqlParameter("@order_id", orderId));
                 comm.ExecuteNonQuery();
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("*Lỗi: " + ex);
-                return false;
+                Console.WriteLine("* An error occurred while interacting with SQL Server: " + ex);
+                return true;
             }
             finally
             {
@@ -410,16 +457,29 @@ namespace R2S.Training.ConnectionManager
         //Thêm mới employee 
         public bool AddEmployee(Employee employee)
         {
-            conn.Open();
-            comm = new SqlCommand("insert_Employee", conn);
-            comm.Parameters.Add(new SqlParameter("@employee_id", employee.EmployeeId));
-            comm.Parameters.Add(new SqlParameter("@employee_name", employee.EmployeeName));
-            comm.Parameters.Add(new SqlParameter("@salary", employee.Salary));
-            comm.Parameters.Add(new SqlParameter("@supervisor_id", employee.SpvrId));
-            comm.CommandType = CommandType.StoredProcedure;
-            comm.ExecuteNonQuery();
-            conn.Close();
-            return true;
+            try
+            {
+                conn.Open();
+
+                comm = new SqlCommand("insert into Employee(employee_name,salary,supervisor_id) values(@employee_name,@salary,@supervisor_id)", conn);
+                comm.Parameters.Add(new SqlParameter("@employee_name", employee.EmployeeName));
+                comm.Parameters.Add(new SqlParameter("@salary", employee.Salary));
+                comm.Parameters.Add(new SqlParameter("@supervisor_id", employee.SpvrId));
+                comm.CommandType = CommandType.Text;
+
+                comm.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("* An error occurred while interacting with SQL Server: " + ex);
+                return true;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
         // Xóa đơn đặt hàng theo mã khách hàng
@@ -483,16 +543,30 @@ namespace R2S.Training.ConnectionManager
         }
 
         // Thêm mới sản phẩm
-        public bool InsertProduct(Product product)
+        public bool AddProduct(Product product)
         {
-            conn.Open();
-            comm = new SqlCommand("insert into Product(product_name,product_price) values (@product_name,@product_price)", conn);
-            comm.Parameters.Add(new SqlParameter("@product_name", product.ProductName));
-            comm.Parameters.Add(new SqlParameter("@product_price", product.Price));
-            comm.CommandType = CommandType.StoredProcedure;
-            comm.ExecuteNonQuery();
-            conn.Close();
-            return true;
+            try
+            {
+                conn.Open();
+
+                comm = new SqlCommand("insert into Product(product_name,product_price) values (@product_name,@product_price)", conn);
+                comm.Parameters.Add(new SqlParameter("@product_name", product.ProductName));
+                comm.Parameters.Add(new SqlParameter("@product_price", product.ProductPrice));
+                comm.CommandType = CommandType.Text;
+
+                comm.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("* An error occurred while interacting with SQL Server: " + ex);
+                return true;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
         // Xóa sản phẩm
@@ -514,7 +588,7 @@ namespace R2S.Training.ConnectionManager
             comm = new SqlCommand("update Product set product_name=@product_name, product_price=@product_price where product_id=@product_id", conn);
             comm.Parameters.Add(new SqlParameter("@product_id", product.ProductId));
             comm.Parameters.Add(new SqlParameter("@product_name", product.ProductName));
-            comm.Parameters.Add(new SqlParameter("@product_price", product.Price));
+            comm.Parameters.Add(new SqlParameter("@product_price", product.ProductPrice));
             
             comm.ExecuteNonQuery();
             conn.Close();

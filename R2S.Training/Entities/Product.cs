@@ -10,13 +10,13 @@ namespace R2S.Training.Entities
     {
         private int productId;
         private string productName;
-        private double price;
+        private double productPrice;
 
-        public Product(int productId, string productName, double price)
+        public Product(int productId, string productName, double productPrice)
         {
             this.productId = productId;
             this.productName = productName;
-            this.price = price;
+            this.productPrice = productPrice;
         }
 
         public int ProductId
@@ -29,9 +29,9 @@ namespace R2S.Training.Entities
             get => productName;
         }
 
-        public double Price
+        public double ProductPrice
         {
-            get => price;
+            get => productPrice;
         }
     }
 }

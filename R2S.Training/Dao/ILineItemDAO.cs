@@ -12,7 +12,5 @@ namespace R2S.Training.Dao
         List<LineItem> GetAllItemsByOrderId(int orderId);
 
         bool AddLineItem(LineItem lineItem);
-
-        bool UpdateLineItem(LineItem lineItem);
     }
 }

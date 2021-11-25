@@ -26,10 +26,5 @@ namespace R2S.Training.Dao
         {
             return db.GetAllItemsByOrderId(orderId);
         }
-
-        public bool UpdateLineItem(LineItem lineItem)
-        {
-            return db.UpdateLineItemById(lineItem);
-        }
     }
 }

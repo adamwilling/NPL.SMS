@@ -21,67 +21,70 @@ namespace R2S.Training
             int choice;
             do
             {
-                Console.WriteLine("=================================================QUẢN LÝ BÁN HÀNG=================================================");
-                Console.WriteLine("1. Lấy thông tin tất cả khách hàng.");
-                Console.WriteLine("2. Lấy thông tin tất cả đơn hàng theo mã khách hàng.");
-                Console.WriteLine("3. Lấy thông tin chi tiết đơn hàng theo mã đơn hàng.");
-                Console.WriteLine("4. Tính tổng giá của đơn hàng theo mã đơn hàng.");
-                Console.WriteLine("5. Thêm khách hàng.");
-                Console.WriteLine("6. Xóa khách hàng.");
-                Console.WriteLine("7. Cập nhật thông tin khách hàng.");
-                Console.WriteLine("8. Thêm đơn hàng.");
-                Console.WriteLine("9. Thêm chi tiết đơn hàng.");
-                Console.WriteLine("10. Cập nhật tổng giá trị đơn hàng.");
-                Console.Write("- Lựa chọn chức năng: ");
+                Console.WriteLine("=================================================Sale Management=================================================");
+                Console.WriteLine("1. Get all customer.");
+                Console.WriteLine("2. Get all orders by customer id.");
+                Console.WriteLine("3. Get all items by order id");
+                Console.WriteLine("4. Compute order total by order id.");
+                Console.WriteLine("5. Add customer.");
+                Console.WriteLine("6. Delete customer.");
+                Console.WriteLine("7. Update customer.");
+                Console.WriteLine("8. Add order.");
+                Console.WriteLine("9. Add line item.");
+                Console.WriteLine("10. Update order total.");
+                Console.WriteLine("--------------------------------");
+                Console.WriteLine("11. Add employee.");
+                Console.WriteLine("12. Add product.");
+                Console.Write("- Enter your choice: ");
                 do
                 {
-                    choice = int.Parse(Console.ReadLine());
-                    if (choice <= 0 || choice > 10)
+                    int.TryParse(Console.ReadLine(), out choice);
+                    if (choice <= 0 || choice > 12)
                     {
-                        Console.Write("*Vui lòng chọn chức năng hợp lệ: ");
+                        Console.Write("* Invalid choice! Re-enter: ");
                     }
-                } while (choice <= 0 || choice > 10);
+                } while (choice <= 0 || choice > 12);
                 switch (choice)
                 {
-                    case 1:         // Chức năng 1: Lấy thông tin tất cả khách hàng
+                    case 1:
                         {
                             GetAllCustomer();
                             break;
                         }
-                    case 2:         // Chức năng 2: Lấy thông tin tất cả đơn hàng theo mã khách hàng
+                    case 2:
                         {
                             int customerId;
-                            Console.Write("- Nhập mã khách hàng: ");
+                            Console.Write("- Enter customer id: ");
                             customerId = int.Parse(Console.ReadLine());
 
-                            GetAllOrderByCustomerId(customerId);
+                            GetAllOrdersByCustomerId(customerId);
 
                             break;
                         }
-                    case 3:         // Chức năng 3: Lấy thông tin chi tiết đơn hàng theo mã đơn hàng
+                    case 3:
                         {
                             int orderId;
-                            Console.Write("- Nhập mã đơn hàng: ");
+                            Console.Write("- Enter order id: ");
                             orderId = int.Parse(Console.ReadLine());
 
-                            GetAllItemByOrderId(orderId);
+                            GetAllItemsByOrderId(orderId);
 
                             break;
                         }
-                    case 4:         // Chức năng 4: Tính tổng giá của tất cả đơn hàng theo mã đơn hàng
+                    case 4:
                         {
                             int orderId;
-                            Console.Write("- Nhập mã đơn hàng: ");
+                            Console.Write("- Enter order id: ");
                             orderId = int.Parse(Console.ReadLine());
 
                             ComputeOrderTotal(orderId);
 
                             break;
                         }
-                    case 5:         // Chức năng 5: Thêm khách hàng
+                    case 5:
                         {
                             string customerName;
-                            Console.Write("- Nhập tên khách hàng cần thêm: ");
+                            Console.Write("- Enter customer name: ");
                             customerName = Console.ReadLine();
 
                             Customer customer = new Customer(1, customerName);
@@ -89,24 +92,24 @@ namespace R2S.Training
 
                             break;
                         }
-                    case 6:         // Chức năng 6: Xóa khách hàng
+                    case 6:
                         {
                             int customerId;
-                            Console.Write("- Nhập mã khách hàng cần xóa: ");
+                            Console.Write("- Enter customer id: ");
                             customerId = int.Parse(Console.ReadLine());
 
                             DeleteCustomer(customerId);
 
                             break;
                         }
-                    case 7:         // Chức năng 7: Cập nhật thông tin khách hàng
+                    case 7:
                         {
                             int customerId;
-                            Console.Write("- Nhập mã khách hàng cần sửa: ");
+                            Console.Write("- Enter customer id: ");
                             customerId = int.Parse(Console.ReadLine());
 
                             String customerName;
-                            Console.Write("- Nhập tên mới: ");
+                            Console.Write("- Enter new name: ");
                             customerName = Console.ReadLine();
 
                             Customer customer = new Customer(customerId, customerName);
@@ -114,14 +117,14 @@ namespace R2S.Training
 
                             break;
                         }
-                    case 8:         // Chức năng 8: Thêm đơn hàng
+                    case 8:
                         {
                             int customerId;
-                            Console.Write("- Nhập mã khách hàng: ");
+                            Console.Write("- Enter customer id: ");
                             customerId = int.Parse(Console.ReadLine());
 
                             int employeeId;
-                            Console.Write("- Nhập mã nhân viên: ");
+                            Console.Write("- Enter employee id: ");
                             employeeId = int.Parse(Console.ReadLine());
 
                             Order order = new Order(1, DateTime.Now, customerId, employeeId, 0);
@@ -129,32 +132,70 @@ namespace R2S.Training
 
                             break;
                         }
-                    case 9:         // Chức năng 9: Thêm chi tiết đơn hàng mới
+                    case 9:
                         {
                             int orderId;
-                            Console.Write("- Nhập mã đơn hàng: ");
+                            Console.Write("- Enter order id: ");
                             orderId = int.Parse(Console.ReadLine());
 
                             int productId;
-                            Console.Write("- Nhập mã sản phẩm: ");
+                            Console.Write("- Enter product id: ");
                             productId = int.Parse(Console.ReadLine());
 
                             int quantity;
-                            Console.Write("- Nhập số lượng: ");
+                            Console.Write("- Enter quantity: ");
                             quantity = int.Parse(Console.ReadLine());
 
-                            LineItem lineItem = new LineItem(orderId, productId, quantity, 0);
+                            double price;
+                            Console.Write("- Enter price: ");
+                            price = double.Parse(Console.ReadLine());
+
+                            LineItem lineItem = new LineItem(orderId, productId, quantity, price);
                             AddLineItem(lineItem);
 
                             break;
                         }
-                    case 10:           // Chức năng 10: Cập nhật giá đơn hàng
+                    case 10:
                         {
                             int orderId;
-                            Console.Write("- Nhập mã đơn hàng cần cập nhật giá: ");
+                            Console.Write("- Enter order id: ");
                             orderId = int.Parse(Console.ReadLine());
 
                             UpdateOrderTotal(orderId);
+
+                            break;
+                        }
+                    case 11:
+                        {
+                            string employeeName;
+                            Console.Write("- Enter employee name: ");
+                            employeeName = Console.ReadLine();
+
+                            double salary;
+                            Console.Write("- Enter employee's salary: ");
+                            salary = double.Parse(Console.ReadLine());
+
+                            int spvrId;
+                            Console.Write("- Enter supervisor id: ");
+                            spvrId = int.Parse(Console.ReadLine());
+
+                            Employee employee = new Employee(1, employeeName, salary, spvrId);
+                            AddEmployee(employee);
+
+                            break;
+                        }
+                    case 12:
+                        {
+                            string productName;
+                            Console.Write("- Enter product name: ");
+                            productName = Console.ReadLine();
+
+                            double productPrice;
+                            Console.Write("- Enter product price: ");
+                            productPrice = double.Parse(Console.ReadLine());
+
+                            Product product = new Product(1, productName, productPrice);
+                            AddProduct(product);
 
                             break;
                         }
@@ -170,97 +211,76 @@ namespace R2S.Training
         #region Lấy thông tin tất cả khách hàng
         private static void GetAllCustomer()
         {
-            try
+            CustomerDomain customerDomain = new CustomerDomain();
+            List<Customer> listCustomer = customerDomain.GetAllCustomer();
+            if (listCustomer != null)
             {
-                CustomerDomain customerDomain = new CustomerDomain();
-                List<Customer> listCustomer = customerDomain.GetAllCustomer();
-                if (listCustomer != null)
+                Console.WriteLine("* List customer: " + listCustomer.Count + " (customer)");
+                foreach (Customer customer in listCustomer)
                 {
-                    Console.WriteLine("*Danh sách khách hàng: " + listCustomer.Count);
-                    foreach (Customer customer in listCustomer)
-                    {
-                        Console.WriteLine("-----------------------------------------------------------------------------------------------");
-                        Console.WriteLine("- Mã khách hàng: " + customer.CustomerId);
-                        Console.WriteLine("- Tên khách hàng: " + customer.CustomerName);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("*Danh sách khách hàng trống");
+                    Console.WriteLine("-----------------------------------------------------------------------------------------------");
+                    Console.WriteLine("- Customer id: " + customer.CustomerId);
+                    Console.WriteLine("- Customer name: " + customer.CustomerName);
                 }
             }
-            catch
+            else
             {
-                Console.WriteLine("Lỗi!");
+                Console.WriteLine("* List customer is empty");
             }
 
         }
         #endregion
 
         #region Lấy thông tin tất cả đơn đặt hàng theo mã khách hàng
-        private static void GetAllOrderByCustomerId(int customerId)
+        private static void GetAllOrdersByCustomerId(int customerId)
         {
-            try
+            OrderDomain orderDomain = new OrderDomain();
+            CustomerDomain customerDomain = new CustomerDomain();
+            EmployeeDomain employeeDomain = new EmployeeDomain();
+            List<Order> listOrder = orderDomain.GetAllOrdersByCustomerId(customerId);
+            if (listOrder != null)
             {
-                OrderDomain orderDomain = new OrderDomain();
-                CustomerDomain customerDomain = new CustomerDomain();
-                EmployeeDomain employeeDomain = new EmployeeDomain();
-                List<Order> listOrder = orderDomain.GetAllOrdersByCustomerId(customerId);
-                if (listOrder != null)
+                Console.WriteLine("* All orders: " + customerId + ": " + listOrder.Count + " (order)");
+                foreach (Order order in listOrder)
                 {
-                    Console.WriteLine("*Thông tin đơn đặt hàng có mã khách hàng: " + customerId + ": " + listOrder.Count + " (đơn)");
-                    foreach (Order order in listOrder)      // Hiện thị từng đơn hàng
-                    {
-                        Customer customer = customerDomain.SearchCustomerById(order.CustomerId);
-                        Employee employee = employeeDomain.SearchEmployeeById(order.EmployeeId);
-                        Console.WriteLine("-----------------------------------------------------------------------------------------------");
-                        Console.WriteLine("- Mã đơn hàng: " + order.OrderId);
-                        Console.WriteLine("- Thời gian đặt hàng: " + order.OrderDate.ToString());
-                        Console.WriteLine("- Khách hàng: " + customer.CustomerName);
-                        Console.WriteLine("- Nhân viên: " + employee.EmployeeName);
-                        Console.WriteLine("- Tổng: " + order.Total + " VND");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("*Thông tin đơn đặt hàng có mã khách hàng " + customerId + ": trống!!!");
+                    Customer customer = customerDomain.SearchCustomerById(order.CustomerId);
+                    Employee employee = employeeDomain.SearchEmployeeById(order.EmployeeId);
+                    Console.WriteLine("-----------------------------------------------------------------------------------------------");
+                    Console.WriteLine("- Order id: " + order.OrderId);
+                    Console.WriteLine("- Order date: " + order.OrderDate.ToString());
+                    Console.WriteLine("- Customer: {0} - {1}", order.CustomerId, customer.CustomerName);
+                    Console.WriteLine("- Employee: {0} - {1}", order.EmployeeId, employee.EmployeeName);
+                    Console.WriteLine("- Total: " + order.Total + " VND");
                 }
             }
-            catch
+            else
             {
-                Console.WriteLine("*Có lỗi xảy ra khi lấy thông tin đơn hàng có mã khách hàng: " + customerId + "!!!");
+                Console.WriteLine("* Empty!");
             }
         }
         #endregion
 
         #region Lấy thông tin chi tiết đơn hàng theo mã đơn hàng
-        private static void GetAllItemByOrderId(int orderId)
+        private static void GetAllItemsByOrderId(int orderId)
         {
-            try
+            ProductDomain productDomain = new ProductDomain();
+            LineItemDomain lineItemDomain = new LineItemDomain();
+            List<LineItem> listLineItem = lineItemDomain.GetAllItemsByOrderId(orderId);
+            if (listLineItem != null)
             {
-                ProductDomain productDomain = new ProductDomain();
-                LineItemDomain lineItemDomain = new LineItemDomain();
-                List<LineItem> listLineItem = lineItemDomain.GetAllItemsByOrderId(orderId);
-                if (listLineItem != null)
+                Console.WriteLine("*All items of order id " + orderId + ": " + listLineItem.Count + " (items)");
+                foreach (LineItem lineItem in listLineItem)
                 {
-                    Console.WriteLine("*Thông tin chi tiết đơn hàng có mã đơn hàng " + orderId + ": " + listLineItem.Count + " (đơn)");
-                    foreach (LineItem lineItem in listLineItem)
-                    {
-                        Product product = productDomain.SearchProductById(lineItem.ProductId);
-                        Console.WriteLine("-----------------------------------------------------------------------------------------------");
-                        Console.WriteLine("- Sản phẩm: " + product.ProductName);
-                        Console.WriteLine("- Số lượng: " + lineItem.Quantity);
-                        Console.WriteLine("- Giá: " + lineItem.Price);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("*Thông tin chi tiết đơn hàng có mã đơn hàng " + orderId + " trống!!!");
+                    Product product = productDomain.SearchProductById(lineItem.ProductId);
+                    Console.WriteLine("-----------------------------------------------------------------------------------------------");
+                    Console.WriteLine("- Product: {0} - {1} ", lineItem.ProductId, product.ProductName);
+                    Console.WriteLine("- Quantity: " + lineItem.Quantity);
+                    Console.WriteLine("- Price: " + lineItem.Price);
                 }
             }
-            catch
+            else
             {
-                Console.WriteLine("*Có lỗi xảy ra khi lấy thông tin chi tiết đơn hàng có mã đơn hàng " + orderId + "!!!");
+                Console.WriteLine("* Empty!");
             }
         }
         #endregion
@@ -270,28 +290,21 @@ namespace R2S.Training
         {
             OrderDomain orderDomain = new OrderDomain();
             double total = orderDomain.ComputeOrderTotal(orderId);
-            Console.WriteLine("*Tổng giá tất cả đơn hàng có mã đơn hàng " + orderId + ": " + total + " VND");
+            Console.WriteLine("*Total order with id " + orderId + ": " + total + " VND");
         }
         #endregion
 
         #region Thêm khách hàng
         private static void AddCutomer(Customer customer)
         {
-            try
+            CustomerDomain customerDomain = new CustomerDomain();
+            if (customerDomain.AddCustomer(customer))
             {
-                CustomerDomain customerDomain = new CustomerDomain();
-                if (customerDomain.AddCustomer(customer))
-                {
-                    Console.WriteLine("*Thêm thành công!");
-                }
-                else
-                {
-                    Console.WriteLine("*Thêm thất bại!");
-                }
+                Console.WriteLine("* Add customer successfully!");
             }
-            catch
+            else
             {
-                Console.WriteLine("*Có lỗi xảy ra khi thêm khách hàng!!!");
+                Console.WriteLine("* Add customer unsuccessfully!");
             }
         }
         #endregion
@@ -299,43 +312,29 @@ namespace R2S.Training
         #region Xóa khách hàng
         private static void DeleteCustomer(int customerId)
         {
-            try
-            {
                 CustomerDomain customerDomain = new CustomerDomain();
                 if (customerDomain.DeleteCustomer(customerId))
                 {
-                    Console.WriteLine("*Xóa thành công!");
+                    Console.WriteLine("* Delete customer successfully!");
                 }
                 else
                 {
-                    Console.WriteLine("*Xóa thất bại!");
+                    Console.WriteLine("* Delete customer unsuccessfully!");
                 }
-            }
-            catch
-            {
-                Console.WriteLine("*Có lỗi xảy ra khi xóa khách hàng!!!");
-            }
         }
         #endregion
 
         #region Cập nhật thông tin khách hàng
         private static void UpdateCustomer(Customer customer)
         {
-            try
+            CustomerDomain customerDomain = new CustomerDomain();
+            if (customerDomain.UpdateCustomer(customer))
             {
-                CustomerDomain customerDomain = new CustomerDomain();
-                if (customerDomain.UpdateCustomer(customer))
-                {
-                    Console.WriteLine("*Cập nhật thông tin khách hàng thành công!");
-                }
-                else
-                {
-                    Console.WriteLine("*Cập nhật thông tin khách hàng thất bại!");
-                }
+                Console.WriteLine("* Update customer successfully!");
             }
-            catch
+            else
             {
-                Console.WriteLine("*Có lỗi xảy ra khi cập nhật thông tin khách hàng!");
+                Console.WriteLine("* Update customer unsuccessfully!");
             }
         }
         #endregion
@@ -343,21 +342,14 @@ namespace R2S.Training
         #region Thêm đơn hàng
         private static void AddOrder(Order order)
         {
-            try
+            OrderDomain orderDomain = new OrderDomain();
+            if (orderDomain.AddOrder(order))
             {
-                OrderDomain orderDomain = new OrderDomain();
-                if (orderDomain.AddOrder(order))
-                {
-                    Console.WriteLine("*Thêm đơn hàng thành công!");
-                }
-                else
-                {
-                    Console.WriteLine("*Thêm đơn hàng thất bại!");
-                }
+                Console.WriteLine("* Add order successfully!");
             }
-            catch
+            else
             {
-                Console.WriteLine("*Có lỗi xảy ra khi thêm đơn hàng!!!");
+                Console.WriteLine("* Add order unsuccessfully!");
             }
         }
         #endregion
@@ -365,21 +357,14 @@ namespace R2S.Training
         #region Thêm chi tiết đơn hàng
         private static void AddLineItem(LineItem lineItem)
         {
-            try
+            LineItemDomain lineItemDomain = new LineItemDomain();
+            if (lineItemDomain.AddLineItem(lineItem))
             {
-                LineItemDomain lineItemDomain = new LineItemDomain();
-                if (lineItemDomain.AddLineItem(lineItem))
-                {
-                    Console.WriteLine("*Thêm chi tiết đơn hàng thành công!");
-                }
-                else
-                {
-                    Console.WriteLine("*Thêm chi tiết đơn hàng thất bại!");
-                }
+                Console.WriteLine("* Add line item successfully!");
             }
-            catch
+            else
             {
-                Console.WriteLine("*Có lỗi xảy ra khi thêm chi tiết đơn hàng!!!");
+                Console.WriteLine("* Add line item usuccessfully!");
             }
         }
         #endregion
@@ -390,11 +375,41 @@ namespace R2S.Training
             OrderDomain orderDomain = new OrderDomain();
             if (orderDomain.UpdateOrderTotal(orderId))
             {
-                Console.WriteLine("*Cập nhật tổng giá trị đơn hàng thành công!");
+                Console.WriteLine("* Update order total successfully!");
             }
             else
             {
-                Console.WriteLine("***Cập nhật tổng giá trị đơn hàng thất bại!!!");
+                Console.WriteLine("* Update order total unsuccessfully!");
+            }
+        }
+        #endregion
+
+        #region Thêm nhân viên
+        private static void AddEmployee(Employee employee)
+        {
+            EmployeeDomain employeeDomain = new EmployeeDomain();
+            if (employeeDomain.AddEmployee(employee))
+            {
+                Console.WriteLine("* Add employee successfully!");
+            }
+            else
+            {
+                Console.WriteLine("* Add employee unsuccessfully!");
+            }
+        }
+        #endregion
+
+        #region Thêm sản phẩm
+        private static void AddProduct(Product product)
+        {
+            ProductDomain productDomain = new ProductDomain();
+            if (productDomain.AddProduct(product))
+            {
+                Console.WriteLine("* Add product successfully!");
+            }
+            else
+            {
+                Console.WriteLine("* Add product unsuccessfully!");
             }
         }
         #endregion
