@@ -19,7 +19,7 @@ namespace R2S.Training.Dao
         }
         public bool AddCustomer(Customer customer)
         {
-            return db.AddCustmer(customer);
+            return db.AddCustomer(customer);
         }
 
         public bool DeleteCustomer(int customerId)

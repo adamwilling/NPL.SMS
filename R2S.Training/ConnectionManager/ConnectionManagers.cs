@@ -32,7 +32,7 @@ namespace R2S.Training.ConnectionManager
 
                 List<Customer> listCustomer = new List<Customer>();
 
-                comm = new SqlCommand("select * from Customer", conn);
+                comm = new SqlCommand("select Customer.customer_id, Customer.customer_name from Customer where Customer.customer_id in (select Orders.customer_id from Orders where Orders.customer_id=Customer.customer_id", conn);
 
                 SqlDataReader dataReader = comm.ExecuteReader();
                 while (dataReader.Read())
@@ -142,7 +142,7 @@ namespace R2S.Training.ConnectionManager
         }
 
         // Chức năng 5: Thêm khách hàng
-        public bool AddCustmer(Customer customer)
+        public bool AddCustomer(Customer customer)
         {
             try
             {
@@ -269,7 +269,7 @@ namespace R2S.Training.ConnectionManager
             catch (Exception ex)
             {
                 Console.WriteLine("* An error occurred while interacting with SQL Server: " + ex);
-                return true;
+                return false;
             }
             finally
             {
@@ -283,7 +283,7 @@ namespace R2S.Training.ConnectionManager
             try
             {
                 conn.Open();
-                comm = new SqlCommand("update Orders set total = (select SUM(price*quantity) from LineItem) where order_id=@order_id", conn);
+                comm = new SqlCommand("update Orders set total = (select SUM(price*quantity) from LineItem where order_id=@order_id) where order_id=@order_id", conn);
                 comm.Parameters.Add(new SqlParameter("@order_id", orderId));
                 comm.ExecuteNonQuery();
                 return true;
@@ -291,7 +291,7 @@ namespace R2S.Training.ConnectionManager
             catch (Exception ex)
             {
                 Console.WriteLine("* An error occurred while interacting with SQL Server: " + ex);
-                return true;
+                return false;
             }
             finally
             {

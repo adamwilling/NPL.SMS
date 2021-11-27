@@ -35,7 +35,7 @@ namespace R2S.Training.Domain
         {
             if (productDao.SearchProductById(productId) == null)
             {
-                Console.WriteLine("***Mã nhân viên không tồn tại!!!");
+                Console.WriteLine("*** Product id not found!!!");
                 return false;
             }
             return productDao.DeleteProduct(productId);

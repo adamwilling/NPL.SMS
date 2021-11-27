@@ -34,7 +34,7 @@ namespace R2S.Training.Domain
         {
             if (customerDao.SearchCustomerById(customerId) == null)
             {
-                Console.WriteLine("***Mã khách hàng không tồn tại!!!");
+                Console.WriteLine("*** Customer id not found!!!");
                 return false;
             }
             return customerDao.DeleteCustomer(customerId);
@@ -44,7 +44,7 @@ namespace R2S.Training.Domain
         {
             if (customerDao.SearchCustomerById(customer.CustomerId) == null)
             {
-                Console.WriteLine("***Mã khách hàng không tồn tại!!!");
+                Console.WriteLine("*** Customer id not found!!!");
                 return false;
             }
             return customerDao.UpdateCustomer(customer);

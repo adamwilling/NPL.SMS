@@ -34,7 +34,7 @@ namespace R2S.Training.Domain
         {
             if (employeeDao.SearchEmployeeById(employeeId) == null)
             {
-                Console.WriteLine("***Mã nhân viên không tồn tại!!!");
+                Console.WriteLine("*** Employee id not found!!!");
                 return false;
             }
             return employeeDao.DeleteEmployee(employeeId);
@@ -44,6 +44,7 @@ namespace R2S.Training.Domain
         {
             if (employeeDao.SearchEmployeeById(employee.EmployeeId) == null)
             {
+                Console.WriteLine("*** Employee id not found!!!");
                 return false;
             }
             return employeeDao.UpdateEmployee(employee);

@@ -11,17 +11,14 @@ namespace R2S.Training
     class SaleManagement
     {
 
-        static void Main(string[] args)
+        static void Main()
         {
-            // Hàm nhập và xuất tiếng việt
-            Console.InputEncoding = Encoding.Unicode;
-            Console.OutputEncoding = Encoding.Unicode;
-
             #region Giao diện chính
             int choice;
             do
             {
                 Console.WriteLine("=================================================Sale Management=================================================");
+                Console.WriteLine("0. Exit program.");
                 Console.WriteLine("1. Get all customer.");
                 Console.WriteLine("2. Get all orders by customer id.");
                 Console.WriteLine("3. Get all items by order id");
@@ -39,13 +36,15 @@ namespace R2S.Training
                 do
                 {
                     int.TryParse(Console.ReadLine(), out choice);
-                    if (choice <= 0 || choice > 12)
+                    if (choice < 0 || choice > 12)
                     {
                         Console.Write("* Invalid choice! Re-enter: ");
                     }
-                } while (choice <= 0 || choice > 12);
+                } while (choice < 0 || choice > 12);
                 switch (choice)
                 {
+                    case 0:
+                        break;
                     case 1:
                         {
                             GetAllCustomer();

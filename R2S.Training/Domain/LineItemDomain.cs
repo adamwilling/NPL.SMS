@@ -24,7 +24,7 @@ namespace R2S.Training.Domain
         {
             if (orderDAO.SearchOrderById(orderId) == null)
             {
-                Console.WriteLine("*Mã đơn hàng không tồn tại!!!");
+                Console.WriteLine("*** Order id not found!!!");
                 return null;
             }
             return lineItemDAO.GetAllItemsByOrderId(orderId);
@@ -36,20 +36,20 @@ namespace R2S.Training.Domain
             Product product = productDAO.SearchProductById(lineItem.ProductId);
             if (order == null)
             {
-                Console.WriteLine("*Mã đơn hàng không tồn tại!!!");
+                Console.WriteLine("*** Order id not found!!!");
                 if (product == null)
                 {
-                    Console.WriteLine("*Mã sản phẩm không tồn tại!!!");
+                    Console.WriteLine("*** Product id not found!!!");
                     return false;
                 }
                 return false;
             }
             if (product == null)
             {
-                Console.WriteLine("*Mã sản phẩm không tồn tại!!!");
+                Console.WriteLine("**** Product id not found!!!");
                 if (order == null)
                 {
-                    Console.WriteLine("*Mã đơn hàng không tồn tại!!!");
+                    Console.WriteLine("*** Order id not found!!!");
                     return false;
                 }
                 return false;

@@ -24,7 +24,7 @@ namespace R2S.Training.Domain
         {
             if (customerDAO.SearchCustomerById(customerId) == null)
             {
-                Console.WriteLine("*** Mã khách hàng không tồn tại!!!");
+                Console.WriteLine("*** Customer id not found!!!");
                 return null;
             }
             return orderDao.GetAllOrdersByCustomerId(customerId);
@@ -32,12 +32,12 @@ namespace R2S.Training.Domain
 
         internal bool AddOrder(Order order)
         {
-            if(customerDAO.SearchCustomerById(order.CustomerId) == null)       // Kiểm tra mã khách hàng có tồn tại hay không
+            if(customerDAO.SearchCustomerById(order.CustomerId) == null)
             {
-                Console.WriteLine("*** Mã khách hàng không tồn tại!!!");
-                if (employeeDAO.SearchEmployeeById(order.EmployeeId) == null)      // Kiểm tra mã nhân viên có tồn tại hay không
+                Console.WriteLine("*** Customer id not found!!!");
+                if (employeeDAO.SearchEmployeeById(order.EmployeeId) == null)
                 {
-                    Console.WriteLine("*** Mã nhân viên không tồn tại!!!");
+                    Console.WriteLine("*** Employee id not found!!!");
                     return false;
                 }
                 return false;
@@ -47,9 +47,9 @@ namespace R2S.Training.Domain
 
         public double ComputeOrderTotal(int orderId)
         {
-            if (orderDao.SearchOrderById(orderId) == null)      // Kiểm tra mã đơn hàng có tồn tại hay không 
+            if (orderDao.SearchOrderById(orderId) == null)
             {
-                Console.WriteLine("*** Mã đơn hàng không tồn tại!!!");
+                Console.WriteLine("*** Order id not found!!!");
                 return 0;
             }
             return orderDao.ComputeOrderTotal(orderId);
@@ -57,9 +57,9 @@ namespace R2S.Training.Domain
 
         internal bool UpdateOrderTotal(int orderId)
         {
-            if (orderDao.SearchOrderById(orderId) == null)      // Kiểm tra mã đơn hàng có tồn tại hay không 
+            if (orderDao.SearchOrderById(orderId) == null)
             {
-                Console.WriteLine("*** Mã đơn hàng không tồn tại!!!");
+                Console.WriteLine("*** Order id not found!!!");
                 return false;
             }
 
