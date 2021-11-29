@@ -32,7 +32,36 @@ namespace R2S.Training.ConnectionManager
 
                 List<Customer> listCustomer = new List<Customer>();
 
-                comm = new SqlCommand("select Customer.customer_id, Customer.customer_name from Customer where Customer.customer_id in (select Orders.customer_id from Orders where Orders.customer_id=Customer.customer_id", conn);
+                comm = new SqlCommand("select Customer.customer_id, Customer.customer_name from Customer where Customer.customer_id in (Select Orders.customer_id from Orders where Orders.customer_id=Customer.customer_id) ", conn);
+
+                SqlDataReader dataReader = comm.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    Customer customer = new Customer(dataReader.GetInt32(0), dataReader.GetString(1));
+                    listCustomer.Add(customer);
+                }
+
+                return listCustomer;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("* An error occurred while interacting with SQL Server: " + ex);
+                return null;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+        public List<Customer> GetCustomer()
+        {
+            try
+            {
+                conn.Open();
+
+                List<Customer> listCustomer = new List<Customer>();
+
+                comm = new SqlCommand("select * from Customer", conn);
 
                 SqlDataReader dataReader = comm.ExecuteReader();
                 while (dataReader.Read())
@@ -348,7 +377,7 @@ namespace R2S.Training.ConnectionManager
         // Tìm kiếm khách hàng theo mã khách hàng
         public Customer SearchCustomerById(int customerId)
         {
-            foreach(Customer customer in GetAllCustomer())
+            foreach(Customer customer in GetCustomer())
             {
                 if (customer.CustomerId == customerId)
                 {

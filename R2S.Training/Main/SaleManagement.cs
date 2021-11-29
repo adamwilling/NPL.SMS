@@ -13,6 +13,9 @@ namespace R2S.Training
 
         static void Main()
         {
+            Console.InputEncoding = Encoding.Unicode;
+            Console.OutputEncoding = Encoding.Unicode;
+
             #region Giao diện chính
             int choice;
             do
@@ -29,9 +32,6 @@ namespace R2S.Training
                 Console.WriteLine("8. Add order.");
                 Console.WriteLine("9. Add line item.");
                 Console.WriteLine("10. Update order total.");
-                Console.WriteLine("--------------------------------");
-                Console.WriteLine("11. Add employee.");
-                Console.WriteLine("12. Add product.");
                 Console.Write("- Enter your choice: ");
                 do
                 {
