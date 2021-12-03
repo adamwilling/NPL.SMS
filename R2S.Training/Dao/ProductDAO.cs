@@ -16,28 +16,10 @@ namespace R2S.Training.Dao
         {
             db = new ConnectionManagers();
         }
-        public bool AddProduct(Product product)
-        {
-            return db.AddProduct(product);
-        }
-
-        public List<Product> GetAllProduct()
-        {
-            return db.GetAllProduct();
-        }
 
         public Product SearchProductById(int productId)
         {
             return db.SearchProductById(productId);
-        }
-        public bool DeleteProduct(int productId)
-        {
-            return db.DeleteProduct(productId);
-        }
-
-        public bool UpdateProduct(Product product)
-        {
-            return db.UpdateProduct(product);
         }
     }
 }

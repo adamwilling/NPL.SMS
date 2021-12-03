@@ -21,11 +21,6 @@ namespace R2S.Training.Dao
             return db.AddOrder(order);
         }
 
-        public bool DeleteOrderById(int orderId)
-        {
-            return db.DeleteOrderById(orderId);
-        }
-
         public List<Order> GetAllOrdersByCustomerId(int cutomerId)
         {
             return db.GetAllOrderByCutomerId(cutomerId);

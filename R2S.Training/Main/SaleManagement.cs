@@ -22,7 +22,7 @@ namespace R2S.Training
             {
                 Console.WriteLine("=================================================Sale Management=================================================");
                 Console.WriteLine("0. Exit program.");
-                Console.WriteLine("1. Get all customer.");
+                Console.WriteLine("1. Get all customer have ordered.");
                 Console.WriteLine("2. Get all orders by customer id.");
                 Console.WriteLine("3. Get all items by order id");
                 Console.WriteLine("4. Compute order total by order id.");
@@ -53,9 +53,16 @@ namespace R2S.Training
                     case 2:
                         {
                             int customerId;
+                            bool check;
                             Console.Write("- Enter customer id: ");
-                            customerId = int.Parse(Console.ReadLine());
-
+                            do
+                            {
+                                check = int.TryParse(Console.ReadLine(), out customerId);
+                                if (!check)
+                                {
+                                    Console.Write("*** Customer id must be an integer! Re-enter: ");
+                                }
+                            } while (!check);
                             GetAllOrdersByCustomerId(customerId);
 
                             break;
@@ -63,9 +70,16 @@ namespace R2S.Training
                     case 3:
                         {
                             int orderId;
+                            bool check;
                             Console.Write("- Enter order id: ");
-                            orderId = int.Parse(Console.ReadLine());
-
+                            do
+                            {
+                                check = int.TryParse(Console.ReadLine(), out orderId);
+                                if (!check)
+                                {
+                                    Console.Write("*** Order id must be an integer! Re-enter: ");
+                                }
+                            } while (!check);
                             GetAllItemsByOrderId(orderId);
 
                             break;
@@ -73,9 +87,16 @@ namespace R2S.Training
                     case 4:
                         {
                             int orderId;
+                            bool check;
                             Console.Write("- Enter order id: ");
-                            orderId = int.Parse(Console.ReadLine());
-
+                            do
+                            {
+                                check = int.TryParse(Console.ReadLine(), out orderId);
+                                if (!check)
+                                {
+                                    Console.Write("*** Order id must be an integer! Re-enter: ");
+                                }
+                            } while (!check);
                             ComputeOrderTotal(orderId);
 
                             break;
@@ -86,7 +107,7 @@ namespace R2S.Training
                             Console.Write("- Enter customer name: ");
                             customerName = Console.ReadLine();
 
-                            Customer customer = new Customer(1, customerName);
+                            Customer customer = new Customer(customerName);
                             AddCutomer(customer);
 
                             break;
@@ -94,9 +115,16 @@ namespace R2S.Training
                     case 6:
                         {
                             int customerId;
+                            bool check;
                             Console.Write("- Enter customer id: ");
-                            customerId = int.Parse(Console.ReadLine());
-
+                            do
+                            {
+                                check = int.TryParse(Console.ReadLine(), out customerId);
+                                if (!check)
+                                {
+                                    Console.Write("*** Customer id must be an integer! Re-enter: ");
+                                }
+                            } while (!check);
                             DeleteCustomer(customerId);
 
                             break;
@@ -104,10 +132,18 @@ namespace R2S.Training
                     case 7:
                         {
                             int customerId;
+                            bool check;
                             Console.Write("- Enter customer id: ");
-                            customerId = int.Parse(Console.ReadLine());
+                            do
+                            {
+                                check = int.TryParse(Console.ReadLine(), out customerId);
+                                if (!check)
+                                {
+                                    Console.Write("*** Customer id must be an integer! Re-enter: ");
+                                }
+                            } while (!check);
 
-                            String customerName;
+                            string customerName;
                             Console.Write("- Enter new name: ");
                             customerName = Console.ReadLine();
 
@@ -119,14 +155,29 @@ namespace R2S.Training
                     case 8:
                         {
                             int customerId;
+                            bool check;
                             Console.Write("- Enter customer id: ");
-                            customerId = int.Parse(Console.ReadLine());
+                            do
+                            {
+                                check = int.TryParse(Console.ReadLine(), out customerId);
+                                if (!check)
+                                {
+                                    Console.Write("*** Customer id must be an integer! Re-enter: ");
+                                }
+                            } while (!check);
 
                             int employeeId;
                             Console.Write("- Enter employee id: ");
-                            employeeId = int.Parse(Console.ReadLine());
+                            do
+                            {
+                                check = int.TryParse(Console.ReadLine(), out employeeId);
+                                if (!check)
+                                {
+                                    Console.Write("*** Employee id must be an integer! Re-enter: ");
+                                }
+                            } while (!check);
 
-                            Order order = new Order(1, DateTime.Now, customerId, employeeId, 0);
+                            Order order = new Order(DateTime.Now, customerId, employeeId);
                             AddOrder(order);
 
                             break;
@@ -134,20 +185,49 @@ namespace R2S.Training
                     case 9:
                         {
                             int orderId;
+                            bool check;
                             Console.Write("- Enter order id: ");
-                            orderId = int.Parse(Console.ReadLine());
+                            do
+                            {
+                                check = int.TryParse(Console.ReadLine(), out orderId);
+                                if (!check)
+                                {
+                                    Console.Write("*** Order id must be an integer! Re-enter: ");
+                                }
+                            } while (!check);
 
                             int productId;
                             Console.Write("- Enter product id: ");
-                            productId = int.Parse(Console.ReadLine());
+                            do
+                            {
+                                check = int.TryParse(Console.ReadLine(), out productId);
+                                if (!check)
+                                {
+                                    Console.Write("*** Product id must be an integer! Re-enter: ");
+                                }
+                            } while (!check);
 
                             int quantity;
                             Console.Write("- Enter quantity: ");
-                            quantity = int.Parse(Console.ReadLine());
+                            do
+                            {
+                                check = int.TryParse(Console.ReadLine(), out quantity);
+                                if (!check)
+                                {
+                                    Console.Write("*** Quantity must be an integer! Re-enter: ");
+                                }
+                            } while (!check);
 
                             double price;
                             Console.Write("- Enter price: ");
-                            price = double.Parse(Console.ReadLine());
+                            do
+                            {
+                                check = double.TryParse(Console.ReadLine(), out price);
+                                if (!check)
+                                {
+                                    Console.Write("*** Quantity must be a double! Re-enter: ");
+                                }
+                            } while (!check);
 
                             LineItem lineItem = new LineItem(orderId, productId, quantity, price);
                             AddLineItem(lineItem);
@@ -157,44 +237,18 @@ namespace R2S.Training
                     case 10:
                         {
                             int orderId;
+                            bool check;
                             Console.Write("- Enter order id: ");
-                            orderId = int.Parse(Console.ReadLine());
+                            do
+                            {
+                                check = int.TryParse(Console.ReadLine(), out orderId);
+                                if (!check)
+                                {
+                                    Console.Write("*** Order id must be an integer! Re-enter: ");
+                                }
+                            } while (!check);
 
                             UpdateOrderTotal(orderId);
-
-                            break;
-                        }
-                    case 11:
-                        {
-                            string employeeName;
-                            Console.Write("- Enter employee name: ");
-                            employeeName = Console.ReadLine();
-
-                            double salary;
-                            Console.Write("- Enter employee's salary: ");
-                            salary = double.Parse(Console.ReadLine());
-
-                            int spvrId;
-                            Console.Write("- Enter supervisor id: ");
-                            spvrId = int.Parse(Console.ReadLine());
-
-                            Employee employee = new Employee(1, employeeName, salary, spvrId);
-                            AddEmployee(employee);
-
-                            break;
-                        }
-                    case 12:
-                        {
-                            string productName;
-                            Console.Write("- Enter product name: ");
-                            productName = Console.ReadLine();
-
-                            double productPrice;
-                            Console.Write("- Enter product price: ");
-                            productPrice = double.Parse(Console.ReadLine());
-
-                            Product product = new Product(1, productName, productPrice);
-                            AddProduct(product);
 
                             break;
                         }
@@ -207,7 +261,7 @@ namespace R2S.Training
 
         }
 
-        #region Lấy thông tin tất cả khách hàng
+        #region Lấy thông tin tất cả khách hàng đã đặt hàng
         private static void GetAllCustomer()
         {
             CustomerDomain customerDomain = new CustomerDomain();
@@ -379,36 +433,6 @@ namespace R2S.Training
             else
             {
                 Console.WriteLine("* Update order total unsuccessfully!");
-            }
-        }
-        #endregion
-
-        #region Thêm nhân viên
-        private static void AddEmployee(Employee employee)
-        {
-            EmployeeDomain employeeDomain = new EmployeeDomain();
-            if (employeeDomain.AddEmployee(employee))
-            {
-                Console.WriteLine("* Add employee successfully!");
-            }
-            else
-            {
-                Console.WriteLine("* Add employee unsuccessfully!");
-            }
-        }
-        #endregion
-
-        #region Thêm sản phẩm
-        private static void AddProduct(Product product)
-        {
-            ProductDomain productDomain = new ProductDomain();
-            if (productDomain.AddProduct(product))
-            {
-                Console.WriteLine("* Add product successfully!");
-            }
-            else
-            {
-                Console.WriteLine("* Add product unsuccessfully!");
             }
         }
         #endregion

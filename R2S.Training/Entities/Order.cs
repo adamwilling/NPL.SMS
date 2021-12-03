@@ -14,6 +14,13 @@ namespace R2S.Training.Entities
         private int employeeId;
         private double total;
 
+        public Order(DateTime orderDate, int customerId, int employeeId)
+        {
+            this.orderDate = orderDate;
+            this.customerId = customerId;
+            this.employeeId = employeeId;
+            this.total = 0;
+        }
         public Order(int orderId, DateTime orderDate, int customerId, int employeeId, double total)
         {
             this.orderId = orderId;

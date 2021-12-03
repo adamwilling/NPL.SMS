@@ -16,38 +16,10 @@ namespace R2S.Training.Domain
         {
             productDao = new ProductDAO();
         }
-        internal List<Product> GetAllProduct()
-        {
-            return productDao.GetAllProduct();
-        }
 
         internal Product SearchProductById(int productId)
         {
             return productDao.SearchProductById(productId);
-        }
-
-        internal bool AddProduct(Product product)
-        {
-            return productDao.AddProduct(product);
-        }
-
-        internal bool DeleteProduct(int productId)
-        {
-            if (productDao.SearchProductById(productId) == null)
-            {
-                Console.WriteLine("*** Product id not found!!!");
-                return false;
-            }
-            return productDao.DeleteProduct(productId);
-        }
-
-        internal bool UpdateProduct(Product product)
-        {
-            if (productDao.SearchProductById(product.ProductId) == null)
-            {
-                return false;
-            }
-            return productDao.UpdateProduct(product);
         }
     }
 }

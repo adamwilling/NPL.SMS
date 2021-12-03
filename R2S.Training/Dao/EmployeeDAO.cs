@@ -16,29 +16,10 @@ namespace R2S.Training.Dao
         {
             db = new ConnectionManagers();
         }
-        public bool AddEmployee(Employee employee)
-        {
-            return db.AddEmployee(employee);
-        }
-
-        public List<Employee> GetAllEmployee()
-        {
-            return db.GetAllEmployee();
-        }
 
         public Employee SearchEmployeeById(int employeeId)
         {
             return db.SearchEmployeeById(employeeId);
-        }
-
-        public bool DeleteEmployee(int employeeId)
-        {
-            return db.DeleteEmployee(employeeId);
-        }
-
-        public bool UpdateEmployee(Employee employee)
-        {
-            return db.UpdateEmployee(employee);
         }
     }
 }

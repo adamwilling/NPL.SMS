@@ -15,39 +15,10 @@ namespace R2S.Training.Domain
         {
             employeeDao = new EmployeeDAO();
         }
-        internal List<Employee> GetAllEmployee()
-        {
-            return employeeDao.GetAllEmployee();
-        }
 
         internal Employee SearchEmployeeById(int employeeId)
         {
             return employeeDao.SearchEmployeeById(employeeId);
-        }
-
-        internal bool AddEmployee(Employee employee)
-        {
-            return employeeDao.AddEmployee(employee);
-        }
-
-        internal bool DeleteEmployee(int employeeId)
-        {
-            if (employeeDao.SearchEmployeeById(employeeId) == null)
-            {
-                Console.WriteLine("*** Employee id not found!!!");
-                return false;
-            }
-            return employeeDao.DeleteEmployee(employeeId);
-        }
-
-        internal bool UpdateEmployee(Employee employee)
-        {
-            if (employeeDao.SearchEmployeeById(employee.EmployeeId) == null)
-            {
-                Console.WriteLine("*** Employee id not found!!!");
-                return false;
-            }
-            return employeeDao.UpdateEmployee(employee);
         }
     }
 }

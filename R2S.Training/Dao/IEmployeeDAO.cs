@@ -10,15 +10,7 @@ namespace R2S.Training.Dao
 {
     interface IEmployeeDAO
     {
-        List<Employee> GetAllEmployee();
-
         Employee SearchEmployeeById(int employeeId);
-
-        bool AddEmployee(Employee employee);
-
-        bool DeleteEmployee(int employeeId);
-
-        bool UpdateEmployee(Employee employee);
 
     }
 }

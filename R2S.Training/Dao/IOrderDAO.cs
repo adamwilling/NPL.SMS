@@ -15,8 +15,6 @@ namespace R2S.Training.Dao
 
         Order SearchOrderById(int orderId);
 
-        bool DeleteOrderById(int order_id);
-
         double ComputeOrderTotal(int orderId);
 
         bool UpdateOrderTotal(int orderId);

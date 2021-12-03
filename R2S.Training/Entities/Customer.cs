@@ -11,6 +11,10 @@ namespace R2S.Training.Entities
         private int customerId;
         private string customerName;
 
+        public Customer(string customerName)
+        {
+            this.customerName = customerName;
+        }
         public Customer(int customerId, string customerName)
         {
             this.customerId = customerId;
