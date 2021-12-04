@@ -311,7 +311,7 @@ namespace R2S.Training.ConnectionManager
         {
             try
             {
-                comm = new SqlCommand("update Orders set total = " + ComputeOrderTotal(orderId), conn);
+                comm = new SqlCommand("update Orders set total = " + ComputeOrderTotal(orderId) + " where order_id=" + orderId, conn);
                 conn.Open();
                 comm.ExecuteNonQuery();
                 return true;
