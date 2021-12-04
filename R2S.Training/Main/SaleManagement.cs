@@ -36,11 +36,11 @@ namespace R2S.Training
                 do
                 {
                     int.TryParse(Console.ReadLine(), out choice);
-                    if (choice < 0 || choice > 12)
+                    if (choice < 0 || choice > 10)
                     {
                         Console.Write("* Invalid choice! Re-enter: ");
                     }
-                } while (choice < 0 || choice > 12);
+                } while (choice < 0 || choice > 10);
                 switch (choice)
                 {
                     case 0:
